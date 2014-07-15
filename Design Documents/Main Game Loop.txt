@@ -1,0 +1,97 @@
+// --------------- Components -----------------
+% Activity %
+
+while (gameIsRunning)
+{
+	d = GetDeltaTime()
+	InputController.update(d, view)
+	Game.update(d) // will be used to manage score and distance and etc
+	Physics/CollisionDetection.update(d, world)
+	Graphics.update(d, surfaceview) // sv or Frame
+	Ticker.update(d)
+}
+
+// --------------------------------
+% InputController %
+- needs to get the current input
+- throws that data to subscribed event handlers
+
+List<inputEvent> inputs 
+
+void eventHandler(view, event)
+{
+	inputs.add(inputEvent(view, event))
+}
+
+update (delta, view)
+{
+	foreach(inputs e)
+	{
+		alert(e)
+	}
+	clear(inputs)
+}
+
+// --------------------------------
+% Game %
+- this will keep track of all our global variables
+
+update(delta)
+{
+	findDistanceTraveled()
+	if (distance > nextHighestScore)
+	{
+		saveNewHighScore(distance)
+	}
+}
+
+// --------------------------------
+% Physics %
+- will send messages to gameobjects that have collided
+
+update(delta, world)
+{
+	//buildBSPTree() // if we need a better collision system
+	foreach (obj in game)
+	{
+		foreach (o in game)
+		{
+			if (o.id is not obj.id)
+			{
+				bool c = checkCollisions(delta, world, obj, o);
+				if (c)
+				{
+					alert(obj);
+					alert(o);
+				}
+			}
+		}
+	}
+}
+
+// --------------------------------
+% Graphics % 
+
+- draws each object with a graphics component
+
+update(delta, surfaceview)
+{
+	foreach (graphicsObj)
+	{
+		calcFrameRate(delta)
+		obj.draw(surfaceview)
+	}
+}
+
+// --------------------------------
+% Ticker %
+
+- updates any objects that have a tick component
+
+update(delta)
+{
+	foreach(tickableObj)
+	{
+		tickableObj.tick(delta)
+	}
+}

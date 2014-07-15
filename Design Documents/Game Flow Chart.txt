@@ -1,0 +1,23 @@
+> Launch Game
+> Enter "Main Menu Screen" 
+	- (Should there be a dedicated screen or should it just be like tap to start?)
+	- Depending on this answer will determine where the option screen will be
+> (Optional) Player will enter the options screen
+	- Change Sound
+	- View High Scores?
+	- Exit Game
+> Player can leave the options screen to go back to the Main Menu
+	- Player may also leave the options menu to return to the game
+		1. save previous state
+> Player will tap the screen to start the game
+	0. Tap to start Message appears
+	1. Player will tap the screen to begin
+	2. Player will tap to run
+	3. An obstacle will spawn
+	4. Play will dodge the obstacle by jumping or changing lanes
+	5. If player does not die, go back to {2}
+	6. If player does not dodge obstacle, record high score
+	7. Go back to {0}
+> Player can check high scores
+> Player exits the game
+	

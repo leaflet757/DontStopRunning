@@ -1,0 +1,33 @@
+!!Mechanics
+- run from something
+- obstacles in the way which you must dodge or jump over
+- using fingers running motion as actual running motion (taping > sliding)
+- speed dependant on tapping speed
+- dodge obstacles for the first part of the level
+	- towards the end run as fast as you can
+- procedurally generated level, jump/dodge obstacles
+	- over time, obstacle density increases
+	- some obstacles can only be dodged and some only jumped
+- achievement based on distance, how for you got?
+- 3 paths groups (centre, left, right)
+- fail conditions (1 life): hitting an obstacle, falling down, stop running
+- save high scores
+- NAME OF THE GAME: DONT STOP RUNNING
+
+!!THEME
+- soft yellow
+- forest like paths
+- shrubs rocks chasms and other things you have to jump over
+
+!!Sound
+- something to keep you going
+- toggle sound
+- jump sound
+- subtle sound for every time you taping
+- sound when you hit something
+- sound when you fall down
+- some sounds for jumping over huge gap
+- sound when you switch lanes
+- sound when you are about to stop moving
+
+
