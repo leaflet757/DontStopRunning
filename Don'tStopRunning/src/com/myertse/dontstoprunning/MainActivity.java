@@ -47,20 +47,28 @@ public class MainActivity extends Activity {
     @Override
     public void onPause() {
     	super.onPause();
+    	game.onPause();
+    	if (this.isFinishing()) {
+    		// TODO: save anything that may need to be
+    		// saved before exiting
+    	}
     }
     
     @Override
     public void onResume() {
     	super.onResume();
+    	game.onPause();
     }
     
     @Override
     public void onStop() {
     	super.onStop();
+    	game.onStop();
     }
     
     @Override 
     public void onRestart() {
     	super.onRestart();
+    	game.onRestart();
     }
 }

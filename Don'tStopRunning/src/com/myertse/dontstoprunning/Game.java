@@ -4,7 +4,7 @@ import com.example.dontstoprunning.R;
 import com.myertse.framework.impl.Graphics;
 import com.myertse.framework.impl.InputController;
 import com.myertse.framework.impl.Physics;
-import com.myertse.framework.impl.Screen;
+import com.myertse.framework.impl.GameScreen;
 import com.myertse.framework.impl.Ticker;
 
 import android.app.Activity;
@@ -16,7 +16,7 @@ public class Game {
 	
 	// TODO: Not all members are initialized 
 	DataManager worldData;
-	Screen screen;
+	GameScreen screen;
 	
 	boolean isRunning;
 	float prevTime;
@@ -69,6 +69,21 @@ public class Game {
 
 	public void exit() {
 		// TODO save files and delete memory and close the application
+		
+	}
+
+	public void onStop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onRestart() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onPause() {
+		// TODO Auto-generated method stub
 		
 	}
 
