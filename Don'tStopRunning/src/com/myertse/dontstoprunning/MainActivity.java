@@ -1,4 +1,6 @@
-package com.example.dontstoprunning;
+package com.myertse.dontstoprunning;
+
+import com.example.dontstoprunning.R;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +13,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Game game = new Game(this);
+        game.initialize();
+        game.loadContent();
+        game.play();
+        game.exit();
     }
 
 
