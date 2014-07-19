@@ -19,7 +19,6 @@ public class MainActivity extends Activity {
         game.loadContent();
         game.initialize();
         game.run();
-        game.exit();
     }
 
 
@@ -49,8 +48,7 @@ public class MainActivity extends Activity {
     	super.onPause();
     	game.onPause();
     	if (this.isFinishing()) {
-    		// TODO: save anything that may need to be
-    		// saved before exiting
+    		game.exit();
     	}
     }
     
