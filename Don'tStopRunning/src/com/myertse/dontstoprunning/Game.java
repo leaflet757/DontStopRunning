@@ -31,9 +31,11 @@ public class Game {
 	 * and adds it to the GamaDataManager
 	 */
 	public void initialize() {
+		Log.d(this.getClass().toString(), "initializing game");
 		// TODO load any preliminary files here like highscores
 		// initilialize all systems
-		
+		Graphics.init(mainActivity);
+		Log.d(this.getClass().toString(), "game has been initialized");
 	}
 
 	/**
@@ -43,11 +45,14 @@ public class Game {
 	 * initialized systems.
 	 */
 	public void loadContent() {
+		Log.d(this.getClass().toString(), "loading game content");
 		// TODO load all nessisary graphics and sounds here
 		// THIS WILL NOT STAY AS THE LAYOUT
-		mainActivity.setContentView(R.layout.activity_main);
+		screen = new GameScreen(mainActivity);
+		mainActivity.setContentView(screen);
 		
 		prevTime = getCurrentTime();
+		Log.d(this.getClass().toString(), "game content has been loaded");
 	}
 
 	/**
@@ -66,24 +71,28 @@ public class Game {
 	 */
 	public void run() {
 		// TODO Main Game loop
+		Log.d(this.getClass().toString(), "starting main thread");
 		while (isRunning) {
 			// check what part of the game we are on and act occordingly
 			// will need to change this
 			try {
 				float deltaTime = getCurrentTime() - prevTime;
 				// update all our systems
-				InputController.update(deltaTime, screen); // view is the screen being used
-				Physics.update(deltaTime, worldData);
+				//InputController.update(deltaTime, screen); // view is the screen being used
+				//Physics.update(deltaTime, worldData);
 				Graphics.update(deltaTime, screen); // sv or Frame
-				Ticker.update(deltaTime);
-				worldData.update(deltaTime); // manage score & distance & etc
+				Log.d("Main THread Graphics", "Passed Graphics");
+				//Ticker.update(deltaTime);
+				//worldData.update(deltaTime); // manage score & distance & etc
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				Log.e("InterruptedException", e.getMessage());
+				isRunning = false;
 			}
-			isRunning = false;
+			
 		}
+		Log.d(this.getClass().toString(), "main thread finishing");
 	}
 
 	/**
@@ -91,7 +100,8 @@ public class Game {
 	 */
 	public void exit() {
 		// TODO save files and delete memory and close the application
-		
+		Log.d(this.getClass().toString(), "game exitting");
+		isRunning = false;
 	}
 
 	/**
@@ -101,7 +111,8 @@ public class Game {
 	 */
 	public void onStop() {
 		// TODO Auto-generated method stub
-		
+		Log.d(this.getClass().toString(), "game stopping");
+		isRunning = false;
 	}
 
 	/**
@@ -110,7 +121,8 @@ public class Game {
 	 */
 	public void onRestart() {
 		// TODO Auto-generated method stub
-		
+		Log.d(this.getClass().toString(), "game Restarting");
+		isRunning = true;
 	}
 
 	/**
@@ -120,7 +132,8 @@ public class Game {
 	 */
 	public void onPause() {
 		// TODO Auto-generated method stub
-		
+		Log.d(this.getClass().toString(), "game pausing");
+		isRunning = false;
 	}
 
 }

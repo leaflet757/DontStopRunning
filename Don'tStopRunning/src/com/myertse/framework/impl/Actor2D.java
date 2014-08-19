@@ -3,11 +3,13 @@ package com.myertse.framework.impl;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
+import com.myertse.framework.components.DrawableComponent;
 import com.myertse.framework.components.ICollider;
+import com.myertse.framework.components.IDrawable;
 
 public abstract class Actor2D {
+	private IDrawable graphicsComponent = null;
 	private Point location;
-	private Bitmap objPic;
 	private int speed;
 	
 	//Next friday need Screen, input, main charactaer, obstacles
@@ -32,14 +34,16 @@ public abstract class Actor2D {
 	/*
 	 * Base Object Class - TO ADD: Screen connection
 	 */
-	public Actor2D(Point start, Bitmap objPic, int speed) {
+	public Actor2D(Point start, IDrawable graphicsComp, int speed) {
+		if (graphicsComp != null) {
+			graphicsComponent = graphicsComp;
+			Graphics.add(graphicsComponent);
+		}
 		location.x = start.x;
 		location.y = start.y;
-		this.objPic = objPic;
 		this.setSpeed(speed);
 	}
 	
-	abstract public void redraw(float deltaTime, GameScreen display);
 	abstract public void onColision(ICollider obj);
 	abstract public void timerTick(float deltaTime);
 
@@ -49,14 +53,6 @@ public abstract class Actor2D {
 
 	public void setLocation(Point location) {
 		this.location = location;
-	}
-
-	public Bitmap getObjPic() {
-		return objPic;
-	}
-
-	public void setObjPic(Bitmap objPic) {
-		this.objPic = objPic;
 	}
 
 	public int getSpeed() {
