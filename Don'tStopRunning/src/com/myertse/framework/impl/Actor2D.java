@@ -3,14 +3,16 @@ package com.myertse.framework.impl;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
+import com.myertse.dontstoprunning.Actor_List;
 import com.myertse.framework.components.ICollider;
 
 public abstract class Actor2D {
 	private Point location;
 	private Bitmap objPic;
 	private int speed;
+	private Actor_List actorType;
 	
-	//Next friday need Screen, input, main charactaer, obstacles
+	//Next Friday need Screen, input, main character, obstacles
 	/*
 	 * Object list Notes
 	 * Hero
@@ -32,7 +34,8 @@ public abstract class Actor2D {
 	/*
 	 * Base Object Class - TO ADD: Screen connection
 	 */
-	public Actor2D(Point start, Bitmap objPic, int speed) {
+	public Actor2D(Actor_List actorType, Point start, Bitmap objPic, int speed) {
+		this.actorType = actorType;
 		location.x = start.x;
 		location.y = start.y;
 		this.objPic = objPic;
@@ -65,5 +68,13 @@ public abstract class Actor2D {
 
 	public void setSpeed(int speed) {
 		this.speed = speed;
+	}
+
+	public Actor_List getActorType() {
+		return actorType;
+	}
+
+	public void setActorType(Actor_List actorType) {
+		this.actorType = actorType;
 	}
 }
