@@ -16,8 +16,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         game = new Game(this);
-        game.loadContent();
         game.initialize();
+        game.loadContent();
         game.run();
     }
 

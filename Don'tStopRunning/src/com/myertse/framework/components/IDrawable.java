@@ -1,11 +1,13 @@
 package com.myertse.framework.components;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
 public interface IDrawable {
-	// needs to have all the information
-	// has image
-	// scale
-	// color
-	// size
-	// location on screen
 	
+	public void redraw(float deltaTime, Canvas canvas);
+
+	public Bitmap getObjPic();
+	
+	public void setObjPic(Bitmap objPic);
 }
