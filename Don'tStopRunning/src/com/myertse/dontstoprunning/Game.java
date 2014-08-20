@@ -1,14 +1,12 @@
 package com.myertse.dontstoprunning;
 
-import com.example.dontstoprunning.R;
-import com.myertse.framework.impl.Graphics;
-import com.myertse.framework.impl.InputController;
-import com.myertse.framework.impl.Physics;
-import com.myertse.framework.impl.GameScreen;
-import com.myertse.framework.impl.Ticker;
-
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Canvas;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
 
 public class Game {
 
@@ -16,12 +14,13 @@ public class Game {
 	
 	// TODO: Not all members are initialized 
 	//DataManager worldData;
-	GameScreen screen;
+
+	FastRenderView renderScreen1;
 	
 	boolean isRunning;
 	float prevTime;
 	
-	public Game(MainActivity mainActivity) {
+	public Game(Activity mainActivity) {
 		this.mainActivity = mainActivity;
 		isRunning = true;
 	}
@@ -30,12 +29,9 @@ public class Game {
 	 * Initializes any preliminary files that the game may use
 	 * and adds it to the GamaDataManager
 	 */
-	public void initialize() {
-		Log.d(this.getClass().toString(), "initializing game");
-		// TODO load any preliminary files here like highscores
-		// initilialize all systems
-		Graphics.init(mainActivity);
-		Log.d(this.getClass().toString(), "game has been initialized");
+	public void loadDependencies() {
+		renderScreen1 = new FastRenderView(mainActivity);
+		mainActivity.setContentView(renderScreen1);
 	}
 
 	/**
@@ -45,18 +41,7 @@ public class Game {
 	 * initialized systems.
 	 */
 	public void loadContent() {
-		Log.d(this.getClass().toString(), "loading game content");
-		// TODO load all nessisary graphics and sounds here
-		// THIS WILL NOT STAY AS THE LAYOUT
-		screen = new GameScreen(mainActivity, R.id.surfaceView1);
-		Log.d("Screen", screen.toString());
-		Log.d("Screen", screen.getSurfaceView().toString());
-		Log.e("Screen", "Shits jenk yo");
-		
-		mainActivity.setContentView(screen.getSurfaceView());
-		Log.e("mainAvtitvyt", "loaded content view");
-		prevTime = getCurrentTime();
-		Log.d(this.getClass().toString(), "game content has been loaded");
+
 	}
 
 	/**
@@ -65,7 +50,7 @@ public class Game {
 	 * 
 	 * @return float - deltaTime
 	 */
-	private float getCurrentTime() {
+	public float getCurrentTime() {
 		long nano = System.nanoTime();
 		return (nano / 100000);
 	}
@@ -75,28 +60,19 @@ public class Game {
 	 */
 	public void run() {
 		// TODO Main Game loop
-		Log.d(this.getClass().toString(), "starting main thread");
-		while (isRunning) {
-			// check what part of the game we are on and act occordingly
-			// will need to change this
-			try {
-				float deltaTime = getCurrentTime() - prevTime;
-				// update all our systems
-				//InputController.update(deltaTime, screen); // view is the screen being used
-				//Physics.update(deltaTime, worldData);
-				Graphics.update(deltaTime, screen); // sv or Frame
-				Log.d("Main THread Graphics", "Passed Graphics");
-				//Ticker.update(deltaTime);
-				//worldData.update(deltaTime); // manage score & distance & etc
-				Thread.sleep(10);
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.e("InterruptedException", e.getMessage());
-				isRunning = false;
-			}
-			
+		float timeToGet = this.getCurrentTime() + 4000;
+		renderScreen1.resume();
+		while (getCurrentTime() < timeToGet)
+		{
+			Log.d("Overlord", "Game is running");
 		}
-		Log.d(this.getClass().toString(), "main thread finishing");
+		
+		Log.d("Overlord", "Finished Execution");
+		//Log.d(this.getClass().toString(), "starting main thread");
+		//while (isRunning) {
+			
+		//}
+		//Log.d(this.getClass().toString(), "main thread finishing");
 	}
 
 	/**
@@ -106,6 +82,8 @@ public class Game {
 		// TODO save files and delete memory and close the application
 		Log.d(this.getClass().toString(), "game exitting");
 		isRunning = false;
+		
+		renderScreen1.pause();
 	}
 
 	/**
@@ -139,5 +117,57 @@ public class Game {
 		Log.d(this.getClass().toString(), "game pausing");
 		isRunning = false;
 	}
+	
+	class FastRenderView extends SurfaceView implements Runnable {
+		Thread renderThread = null;
+		SurfaceHolder holder;
+		// use volatile when the order of something matters
+		// this is mostly in the onPause Method
+		// running must be set to false first otherwise
+		// infinite loop
+		volatile boolean running = false;
+
+		public FastRenderView(Context context) {
+			super(context);
+			holder = getHolder();
+		}
+
+		public void resume() {
+			running = true;
+			renderThread = new Thread(this);
+			renderThread.start();
+			Log.d("thread", "starting thread");
+		}
+
+		public void run() {
+			while (running) {
+				if (holder == null) Log.d("thread", "holder does not exist");
+				if (!holder.getSurface().isValid()) {
+					Log.e("holder", "holder not valid");
+					continue;
+				}
+				// if the surface is valid, it will always be valid until the
+				// pause is called
+				Canvas canvas = holder.lockCanvas();
+				// this is where drawing goes
+				canvas.drawRGB(255, 0, 0);
+				Log.d("Iverkiadr", "draw thread running");
+				holder.unlockCanvasAndPost(canvas);
+			}
+		}
+
+		public void pause() {
+			while (running) {
+				try {
+					running = false;
+					renderThread.join();
+				} catch (InterruptedException e) {
+					running = true; // retry;
+				}
+			}
+			Log.d("thread", "thread exiting");
+		}
+	}
+
 
 }
