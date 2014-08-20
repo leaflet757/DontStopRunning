@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
+import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 public abstract class Graphics {
@@ -26,8 +27,9 @@ public abstract class Graphics {
 	
 	public static void update(float deltaTime, GameScreen screen) {
 		Canvas canvas = null;
+		SurfaceHolder holder = screen.getHolder();
 		try {
-			canvas = screen.lockCanvas();
+			canvas = holder.lockCanvas();
 			Log.d("Graphics", "Screen has been locked");
 			// TODO: draw game objects
 			//Paint myPaint = new Paint();
@@ -37,7 +39,7 @@ public abstract class Graphics {
 		} catch (Exception e){
 			e.printStackTrace();
 		} finally {
-			screen.unlockCanvasAndPost(canvas);
+			holder.unlockCanvasAndPost(canvas);
 			Log.d("screen", "canvas posted");
 		}
 	}
@@ -58,7 +60,7 @@ public abstract class Graphics {
 		mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		findRelativeAspectRatio(mainActivity);
 		
-		graphicObjects = new ArrayList<IDrawable>();
+		//graphicObjects = new ArrayList<IDrawable>();
 	}
 
 	public static float getScaleX() {
@@ -70,7 +72,7 @@ public abstract class Graphics {
 	}
 
 	public static void add(IDrawable graphicsComponent) {
-		graphicObjects.add(graphicsComponent);
+		//graphicObjects.add(graphicsComponent);
 	}
 
 }

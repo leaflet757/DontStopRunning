@@ -1,33 +1,29 @@
 package com.myertse.framework.impl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
-public class GameScreen extends SurfaceView {
+public class GameScreen {
 
-	SurfaceHolder holder;
+	SurfaceView surfaceView;
 	
-	public GameScreen(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-		holder = this.getHolder();
-		if (holder == null) Log.d("holder", "holder does not live");
-		else Log.d("Holder", holder.toString());
-	}
-	
-	public Canvas lockCanvas() {
-		return holder.lockCanvas();
+	public GameScreen(Activity mainActivity, int surfaceview1) {
+		surfaceView = (SurfaceView)mainActivity.findViewById(0x7f080000);
+		if (surfaceView == null) Log.e("surface", "shits still jenk yo");
 	}
 
-	public void unlockCanvasAndPost(Canvas c) {
-		holder.unlockCanvasAndPost(c);
-	}
-	
 	public SurfaceHolder getHolder(){
-		return holder;
+		if (surfaceView.getHolder() == null) Log.d("HOLDER", "DOES NOT EXIST");
+		return surfaceView.getHolder();
+	}
+
+	public SurfaceView getSurfaceView() {
+		return surfaceView;
 	}
 
 }

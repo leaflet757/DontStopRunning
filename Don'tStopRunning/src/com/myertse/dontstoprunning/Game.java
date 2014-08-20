@@ -15,7 +15,7 @@ public class Game {
 	Activity mainActivity;
 	
 	// TODO: Not all members are initialized 
-	DataManager worldData;
+	//DataManager worldData;
 	GameScreen screen;
 	
 	boolean isRunning;
@@ -48,9 +48,13 @@ public class Game {
 		Log.d(this.getClass().toString(), "loading game content");
 		// TODO load all nessisary graphics and sounds here
 		// THIS WILL NOT STAY AS THE LAYOUT
-		screen = new GameScreen(mainActivity);
-		mainActivity.setContentView(screen);
+		screen = new GameScreen(mainActivity, R.id.surfaceView1);
+		Log.d("Screen", screen.toString());
+		Log.d("Screen", screen.getSurfaceView().toString());
+		Log.e("Screen", "Shits jenk yo");
 		
+		mainActivity.setContentView(screen.getSurfaceView());
+		Log.e("mainAvtitvyt", "loaded content view");
 		prevTime = getCurrentTime();
 		Log.d(this.getClass().toString(), "game content has been loaded");
 	}
