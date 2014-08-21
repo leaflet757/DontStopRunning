@@ -3,6 +3,7 @@ package com.myertse.framework.impl;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -48,6 +49,7 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 			canvas.getClipBounds(dstRect);
 			canvas.drawBitmap(framebuffer, null, dstRect, null);
 			holder.unlockCanvasAndPost(canvas);
+			Log.d("AndroidFastRenderView", "render thread running...");
 		}
 	}
 

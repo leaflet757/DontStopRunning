@@ -8,6 +8,7 @@ import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -61,6 +62,8 @@ public class AndroidGame extends Activity implements Game {
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK,
 				"GLGame");
+		
+		Log.d("AndroidGame", "onCreate finished");
 	}
 
 	@Override
