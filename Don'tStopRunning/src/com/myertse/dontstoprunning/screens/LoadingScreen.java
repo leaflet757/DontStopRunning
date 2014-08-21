@@ -20,10 +20,8 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void update(float deltaTime) {
 		Graphics g = game.getGraphics();
-		Assets.background = g.newPixmap("background/space_background.png", PixmapFormat.RGB565);
-		Assets.playerShip = g.newPixmap("sprites/test_ship.png", PixmapFormat.ARGB4444);
+		Assets.playerShip = g.newPixmap("images/test_ship.png", PixmapFormat.ARGB4444);
 		Assets.explosion = game.getAudio().newSound("sounds/explosion.ogg");
-		Assets.backgroundMusic = game.getAudio().newMusic("music/taviandscratch.mp3");
 		game.setScreen(new GameScreen(game));
 		Log.d("LoadingScreen", "updating...");
 	}
