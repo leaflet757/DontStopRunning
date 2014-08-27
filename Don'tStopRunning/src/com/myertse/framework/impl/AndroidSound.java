@@ -19,6 +19,7 @@ public class AndroidSound implements Sound {
 	public void play(float volume) {
 		streamID = soundPool.play(soundId, volume, volume, 0, 0, 1);
 	}
+	
 	public void stop()
 	{
 		soundPool.stop(streamID);
