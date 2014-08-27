@@ -11,7 +11,13 @@ import com.myertse.framework.Sound;
 public class Assets {
 	public static Pixmap background;
 	public static Pixmap playerShip;
+	public static Pixmap protaganistMid;
+	public static Pixmap protaganistLeft;
+	public static Pixmap protaganistRight;
+	public static Pixmap stepLeft;
+	public static Pixmap stepRight;
 	
+	public static Sound tap;
 	public static Sound explosion;
 	public static Music backgroundMusic;
 }

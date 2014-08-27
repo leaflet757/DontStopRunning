@@ -6,7 +6,8 @@ import com.myertse.framework.Sound;
 
 public class AndroidSound implements Sound {
 
-	int soundId;
+	int soundId = 0;
+	int streamID;
 	SoundPool soundPool;
 
 	public AndroidSound(SoundPool soundPool, int soundId) {
@@ -16,7 +17,11 @@ public class AndroidSound implements Sound {
 
 	@Override
 	public void play(float volume) {
-		soundPool.play(soundId, volume, volume, 0, 0, 1);
+		streamID = soundPool.play(soundId, volume, volume, 0, 0, 1);
+	}
+	public void stop()
+	{
+		soundPool.stop(streamID);
 	}
 
 	@Override

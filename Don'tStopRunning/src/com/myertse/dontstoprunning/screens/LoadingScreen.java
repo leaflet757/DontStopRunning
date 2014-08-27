@@ -21,7 +21,13 @@ public class LoadingScreen extends Screen {
 	public void update(float deltaTime) {
 		Graphics g = game.getGraphics();
 		Assets.playerShip = g.newPixmap("images/test_ship.png", PixmapFormat.ARGB4444);
+		Assets.protaganistMid = g.newPixmap("images/charlie_start.png", PixmapFormat.ARGB4444);
+		Assets.protaganistLeft = g.newPixmap("images/charlie_left.png", PixmapFormat.ARGB4444);
+		Assets.protaganistRight = g.newPixmap("images/charlie_right.png", PixmapFormat.ARGB4444);
+		Assets.stepLeft = g.newPixmap("images/step_left.png", PixmapFormat.ARGB4444);
+		Assets.stepRight = g.newPixmap("images/step_rite.png", PixmapFormat.ARGB4444);
 		Assets.explosion = game.getAudio().newSound("sounds/explosion.ogg");
+		Assets.tap = game.getAudio().newSound("sounds/tp_effect.ogg");
 		game.setScreen(new GameScreen(game));
 		Log.d("LoadingScreen", "updating...");
 	}

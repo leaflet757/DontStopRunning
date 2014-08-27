@@ -1,5 +1,7 @@
 package com.myertse.framework;
 
+
+
 public interface Audio {
 	public Music newMusic(String filename);
 
