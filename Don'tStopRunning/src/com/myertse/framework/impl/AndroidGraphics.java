@@ -9,6 +9,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
@@ -26,12 +27,16 @@ public class AndroidGraphics implements Graphics {
 	Paint paint;
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
+	float scaleX;
+	float scaleY;
 
-	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
+	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer, float scaleX, float scaleY) {
 		this.assets = assets;
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
 		this.paint = new Paint();
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
 	}
 
 	// Tries to load a bitmap from an asset file
@@ -67,6 +72,12 @@ public class AndroidGraphics implements Graphics {
 				}
 			}
 		}
+		
+		// new scaled bitmap
+		Matrix mat = new Matrix();
+		mat.postScale(scaleX, scaleY);
+		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, false);
+		
 		if (bitmap.getConfig() == Config.RGB_565)
 			format = PixmapFormat.RGB565;
 		else if (bitmap.getConfig() == Config.ARGB_4444)
