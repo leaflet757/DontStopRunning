@@ -1,17 +1,25 @@
 package com.myertse.dontstoprunning.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.util.Log;
 
 import com.myertse.dontstoprunning.Assets;
+import com.myertse.dontstoprunning.InputWrapper;
+import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
+import com.myertse.framework.Input.TouchEvent;
 import com.myertse.framework.Pixmap;
 import com.myertse.framework.Screen;
 import com.myertse.framework.Sound;
 
 public class GameScreen extends Screen {
 
-	enum GameState { RUNNING, PAUSED, GAME_OVER }
+	InputWrapper inputWrapper;
+	
+	
 	//Boolean watch variable for left button
 	boolean isLeftPressed = false;
 	boolean isRightPressed = false;
@@ -41,9 +49,34 @@ public class GameScreen extends Screen {
 		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
 		
 		lastLocation = location;
+		
+		// TODO: get the latest game touch action
+		PlayerMovementState state = inputWrapper.getPlayerMovementState();
+		switch (state) {
+		case ALTERNATING:
+			// increase speed
+			break;
+		case DOUBLETAP_LEFT:
+			location--;
+			isLeftPressed = true;
+			break;
+		case DOUBLETAP_RIGHT:
+			location++;
+			isRightPressed = true;
+			break;
+		case JUMPING:
+			// jump action
+			break;
+		case STOPPING:
+			// speed slows
+			break;
+		case STOPPED:
+			// game over
+			break;
+		}
+		
 		if(GAME.getInput().isTouchDown(0))
 		{
-			
 			x = GAME.getInput().getTouchX(0);
 			y = GAME.getInput().getTouchY(0);
 			if(x < (g.getWidth()/2) && y > (g.getHeight() - g.getHeight()/4))
