@@ -83,14 +83,14 @@ public class GameScreen extends Screen {
 			Log.d("Input", "Alternating click");
 			break;
 		case DOUBLETAP_LEFT:
-			lane--;
+			if (lane > 0) lane--;
 			isLeftPressed = true;
 			Assets.tap.play(1);
 			assetToDraw = Assets.protaganistLeft;
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
-			lane++;
+			if (lane < lanes.length-1) lane++;
 			isRightPressed = true;
 			Assets.explosion.play(1);
 			assetToDraw = Assets.protaganistRight;
