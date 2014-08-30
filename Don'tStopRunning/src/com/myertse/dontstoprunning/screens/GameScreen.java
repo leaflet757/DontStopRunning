@@ -20,8 +20,8 @@ public class GameScreen extends Screen {
 	Pixmap assetToDraw = Assets.protaganistMid;
 	
 	//where the person is touching
-	int touchX = 0;
-	int touchY = 0;
+	int touchX = -1;
+	int touchY = -1;
 	
 	int x = 0;
 	
@@ -46,7 +46,7 @@ public class GameScreen extends Screen {
 		// TODO Auto-generated method stub
 		Log.d("GameScreen", "updating...");
 		Graphics g = GAME.getGraphics();
-		g.clear(1);
+		g.clear(0);
 		
 		
 		
