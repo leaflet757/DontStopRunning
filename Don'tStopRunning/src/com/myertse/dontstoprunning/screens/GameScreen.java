@@ -24,6 +24,10 @@ public class GameScreen extends Screen {
 	boolean isLeftPressed = false;
 	boolean isRightPressed = false;
 	
+	// Background Image
+	Pixmap background = Assets.background;
+	
+	
 	// TODO: MOVE TO SEPPARATE CLASS, PLAYER INFORMATION
 	//the Pixmap to draw
 	Pixmap assetToDraw = Assets.protaganistMid;
@@ -124,6 +128,8 @@ public class GameScreen extends Screen {
 	public void present(float deltaTime) {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
+		
+		g.drawPixmap(background, 0, 0);
 
 		//issue picture needs to scale		
 		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
