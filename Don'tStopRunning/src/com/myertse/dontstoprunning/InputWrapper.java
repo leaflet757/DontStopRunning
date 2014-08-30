@@ -12,6 +12,8 @@ public class InputWrapper {
 	
 	boolean released = true;
 	final int DOUBLETAP_INTERVAL = 1000;
+	int leftCounter = 0;
+	int rightCoutner = 0;
 	
 	int width;
 	int height;
@@ -53,20 +55,28 @@ public class InputWrapper {
 			int x = input.getTouchX(0);
 			int y = input.getTouchY(0);
 			if(x < (width/2) && y > (height - height/4)) {
-				if (lastButtonPressed == Button.LEFT) { 
-					currentState = PlayerMovementState.DOUBLETAP_LEFT;
+				if (lastButtonPressed == Button.LEFT) {
+					if (leftCounter % 2 == 1) {
+						currentState = PlayerMovementState.DOUBLETAP_LEFT;
+					}
 				} else {
 					currentState = PlayerMovementState.ALTERNATING;
+					leftCounter = 0;
 				}
 				lastButtonPressed = Button.LEFT;
+				leftCounter++;
 			}
 			if(x > (width/2) && y > (height - height/4)) {
 				if (lastButtonPressed == Button.RIGHT) { 
-					currentState = PlayerMovementState.DOUBLETAP_RIGHT;
+					if (rightCoutner % 2 == 1) {
+						currentState = PlayerMovementState.DOUBLETAP_RIGHT;
+					}
 				} else {
 					currentState = PlayerMovementState.ALTERNATING;
+					rightCoutner = 0;
 				}
 				lastButtonPressed = Button.RIGHT;
+				rightCoutner++;
 			}
 			released = false;
 		// check to see if nothing is touching

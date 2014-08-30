@@ -24,20 +24,24 @@ public class GameScreen extends Screen {
 	boolean isLeftPressed = false;
 	boolean isRightPressed = false;
 	
+	// TODO: MOVE TO SEPPARATE CLASS, PLAYER INFORMATION
 	//the Pixmap to draw
 	Pixmap assetToDraw = Assets.protaganistMid;
-	
-	//where the person is touching
-	int touchX = 0;
-	int touchY = 0;
-	
+	// position
 	int x = 0;
-	
-	//the lane that the character is currently in
+	int y = 0;
+	// current lane
 	int lane = 1;
 	
-	//will be hardocded eventually, y value should not move
-	int y = 0;
+	// lane & map information
+	//location values
+	int xLeftLane;
+	int xMidLane;
+	int xRightLane;
+	int[] lanes = new int[3];
+	
+	
+	// i dont know what these are for :D
 	
 	//The location of he player at the time the starting at zero
 	//the player can move left (negative) or right, (positive)
@@ -47,8 +51,19 @@ public class GameScreen extends Screen {
 	public GameScreen(Game game) {
 		super(game);
 
-		inputWrapper = new InputWrapper(game.getInput(), 
-				game.getGraphics().getWidth(), game.getGraphics().getHeight());
+		Graphics g = game.getGraphics();
+		
+		inputWrapper = new InputWrapper(game.getInput(),
+				g.getWidth(), g.getHeight());
+		
+		
+		// initialize map values
+		xLeftLane = 0;
+		xMidLane = g.getWidth()/3;
+		xRightLane = g.getWidth() - g.getWidth()/3;
+		lanes[0] = xLeftLane;
+		lanes[1] = xMidLane;
+		lanes[2] = xRightLane;
 	}
 
 	@Override
@@ -56,17 +71,9 @@ public class GameScreen extends Screen {
 		// TODO Auto-generated method stub
 		Log.d("GameScreen", "updating...");
 		
-		inputWrapper.update(deltaTime);
-		
-		
-		Graphics g = GAME.getGraphics();
-		g.clear(1);
-
-		//issue picture needs to scale		
-		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
-		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
-		
 		lastLocation = location;
+		
+		inputWrapper.update(deltaTime);
 		
 		// TODO: get the latest game touch action
 		PlayerMovementState state = inputWrapper.getPlayerMovementState();
@@ -76,13 +83,17 @@ public class GameScreen extends Screen {
 			Log.d("Input", "Alternating click");
 			break;
 		case DOUBLETAP_LEFT:
-			location--;
+			lane--;
 			isLeftPressed = true;
+			Assets.tap.play(1);
+			assetToDraw = Assets.protaganistLeft;
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
-			location++;
+			lane++;
 			isRightPressed = true;
+			Assets.explosion.play(1);
+			assetToDraw = Assets.protaganistRight;
 			Log.d("Input", "Double Tap Right");
 			break;
 		case JUMPING:
@@ -112,74 +123,17 @@ public class GameScreen extends Screen {
 	@Override
 	public void present(float deltaTime) {
 		Graphics g = GAME.getGraphics();
-		// TODO Auto-generated method stub
-		
+		g.clear(1);
 
-		//Hard coded location values
+		//issue picture needs to scale		
+		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
+		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
+
 		
-				int xLeftLane = 0;
-				int xMidLane = g.getWidth()/3;
-				int xRightLane = g.getWidth() - g.getWidth()/3;
-				int[] lanes = {xLeftLane, xMidLane, xRightLane};
-		if(isLeftPressed)
-		{
-			Assets.tap.play(1);
-			assetToDraw = Assets.protaganistLeft;
-			if(location < -1)
-			{
-				if(lane > 0)
-				{
-					lane--;
-				}
-				location = 0;
-			}
-			
-			isLeftPressed = false;
-			
-			//debug purposes
-			try
-			{
-				Thread.sleep(500);
-			}
-			catch(Exception e)
-			{
-			}
-			
-		}
-		else if(isRightPressed)
-		{
-			Assets.explosion.play(1);
-			assetToDraw = Assets.protaganistRight;
-			if(location > 1)
-			{
-				if(lane < 2)
-				{
-					lane++;
-				}
-				location = 0;
-			}
-			isRightPressed = false;
-			
-			//debug purposes
-			try
-			{
-				Thread.sleep(500);
-			}
-			catch(Exception e)
-			{
-			}
-		}
-		else
-		{
-			//assetToDraw = Assets.protaganistMid;
-		}
+		
+		// player x position
 		x = lanes[lane];
-		
-		if(lastLocation != location)
-		{
-			//Assets.tap.play(1);
-		}
-		//hard code height
+		//player y position
 		y = g.getHeight()/2;
 		
 		g.drawPixmap(assetToDraw, x, y);
