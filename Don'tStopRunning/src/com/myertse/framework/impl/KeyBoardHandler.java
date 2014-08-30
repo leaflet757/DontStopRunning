@@ -15,7 +15,7 @@ import com.myertse.framework.impl.Pool.PoolObjectFactory;
 public class KeyBoardHandler implements OnKeyListener {
 
 	// based on KeyEver.KEYCODE_XXX
-	// XXX range [0,127]
+	// range [0,127]
 	boolean[] pressedKeys = new boolean[128];
 	// This is to make the garbage collector happy
 	Pool<KeyEvent> keyEventPool;
