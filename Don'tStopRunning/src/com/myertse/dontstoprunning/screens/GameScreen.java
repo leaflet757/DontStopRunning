@@ -35,16 +35,22 @@ public class GameScreen extends Screen {
 	
 	public GameScreen(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
+
+		inputWrapper = new InputWrapper(game.getInput(), 
+				game.getGraphics().getWidth(), game.getGraphics().getHeight());
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
 		Log.d("GameScreen", "updating...");
+		
+		inputWrapper.update(deltaTime);
+		
+		
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
-		//issue picture needs to scale		
+		//issue picture needs to scale
 		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
 		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
 		
@@ -55,40 +61,43 @@ public class GameScreen extends Screen {
 		switch (state) {
 		case ALTERNATING:
 			// increase speed
+			Log.d("Input", "Alternating click");
 			break;
 		case DOUBLETAP_LEFT:
 			location--;
 			isLeftPressed = true;
+			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
 			location++;
 			isRightPressed = true;
+			Log.d("Input", "Double Tap Right");
 			break;
 		case JUMPING:
 			// jump action
+			Log.d("Input", "Double Down");
 			break;
 		case STOPPING:
 			// speed slows
+			Log.d("Input", "Nothing Pressed");
 			break;
 		case STOPPED:
 			// game over
+			Log.d("Input", "Player Not Moving");
+			break;
+		case PAUSING:
+			// pause button clicked
+			Log.d("Input", "Player Paused Game");
+			break;
+		default:
+			// if null
+			Log.d("Input", "inputWrapper is null");
 			break;
 		}
 		
 		if(GAME.getInput().isTouchDown(0))
 		{
-			x = GAME.getInput().getTouchX(0);
-			y = GAME.getInput().getTouchY(0);
-			if(x < (g.getWidth()/2) && y > (g.getHeight() - g.getHeight()/4))
-			{
-				location--;
-				isLeftPressed = true;
-			}
-			if(x > (g.getWidth()/2) && y > (g.getHeight() - g.getHeight()/4))
-			{
-				location++;
-				isRightPressed = true;
-			}
+			
 		
 			//Reaction if
 			if(isLeftPressed && isRightPressed)
