@@ -74,9 +74,9 @@ public class AndroidGraphics implements Graphics {
 		}
 		
 		// new scaled bitmap
-		Matrix mat = new Matrix();
-		mat.postScale(scaleX, scaleY);
-		bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, false);
+		//Matrix mat = new Matrix();
+		//mat.postScale(scaleX, scaleY);
+		//bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, false);
 		
 		if (bitmap.getConfig() == Config.RGB_565)
 			format = PixmapFormat.RGB565;
