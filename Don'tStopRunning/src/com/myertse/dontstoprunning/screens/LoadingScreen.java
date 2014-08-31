@@ -20,6 +20,7 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void update(float deltaTime) {
 		Graphics g = game.getGraphics();
+		Assets.background = g.newPixmap("images/background.png", PixmapFormat.ARGB4444);
 		Assets.playerShip = g.newPixmap("images/test_ship.png", PixmapFormat.ARGB4444);
 		Assets.protaganistMid = g.newPixmap("images/charlie_start.png", PixmapFormat.ARGB4444);
 		Assets.protaganistLeft = g.newPixmap("images/charlie_left.png", PixmapFormat.ARGB4444);
