@@ -13,7 +13,7 @@ public class InputWrapper {
 	boolean released = true;
 	final int DOUBLETAP_INTERVAL = 1000;
 	int leftCounter = 0;
-	int rightCoutner = 0;
+	int rightCounter = 0;
 	
 	int width;
 	int height;
@@ -24,7 +24,7 @@ public class InputWrapper {
 	public InputWrapper(Input input, int screenWidth, int screenHeight) {
 		this.input = input;
 		width = screenWidth;
-		height = screenHeight;
+		height = screenHeight - Assets.stepLeft.getHeight();
 	}
 	
 	public PlayerMovementState getPlayerMovementState() {
@@ -43,8 +43,8 @@ public class InputWrapper {
 			int y = input.getTouchY(0);
 			int x2 = input.getTouchX(1);
 			int y2 = input.getTouchY(1);
-			if(x < (width/2) && y > (height - height/4) &&
-					x2 > (width/2) && y2 > (height - height/4))
+			if(x < (width/2) && y > (height) &&
+					x2 > (width/2) && y2 > (height))
 			{
 				currentState = PlayerMovementState.JUMPING;
 				released = false;
@@ -54,7 +54,7 @@ public class InputWrapper {
 		else if (released && input.isTouchDown(0)) {
 			int x = input.getTouchX(0);
 			int y = input.getTouchY(0);
-			if(x < (width/2) && y > (height - height/4)) {
+			if(x < (width/2) && y > (height)) {
 				if (lastButtonPressed == Button.LEFT) {
 					if (leftCounter % 2 == 1) {
 						currentState = PlayerMovementState.DOUBLETAP_LEFT;
@@ -66,17 +66,17 @@ public class InputWrapper {
 				lastButtonPressed = Button.LEFT;
 				leftCounter++;
 			}
-			if(x > (width/2) && y > (height - height/4)) {
+			if(x > (width/2) && y > (height)) {
 				if (lastButtonPressed == Button.RIGHT) { 
-					if (rightCoutner % 2 == 1) {
+					if (rightCounter % 2 == 1) {
 						currentState = PlayerMovementState.DOUBLETAP_RIGHT;
 					}
 				} else {
 					currentState = PlayerMovementState.ALTERNATING;
-					rightCoutner = 0;
+					rightCounter = 0;
 				}
 				lastButtonPressed = Button.RIGHT;
-				rightCoutner++;
+				rightCounter++;
 			}
 			released = false;
 		// check to see if nothing is touching
