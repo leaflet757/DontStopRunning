@@ -22,6 +22,7 @@ public class Assets {
 	public static Pixmap dodge_enemy1;
 	public static Pixmap dodge_enemy2;
 	public static Pixmap cliff;
+	public static Pixmap dead_text;
 	
 	public static Sound tap;
 	public static Sound explosion;

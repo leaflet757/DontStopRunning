@@ -35,6 +35,7 @@ public class LoadingScreen extends Screen {
 		Assets.cliff = g.newPixmap("images/cliff.png", PixmapFormat.ARGB4444);
 		Assets.explosion = game.getAudio().newSound("sounds/explosion.ogg");
 		Assets.tap = game.getAudio().newSound("sounds/tp_effect.ogg");
+		Assets.dead_text = g.newPixmap("fonts/dead_text.png", PixmapFormat.ARGB4444);
 		game.setScreen(new GameScreen(game));
 		Log.d("LoadingScreen", "updating...");
 	}

@@ -16,7 +16,7 @@ public class DodgeEnemy extends Enemy{
 		super(image, initialX, initialY, initialSpeed);
 		Random random = new Random();
 		Pixmap newImage = pictureList[random.nextInt(pictureList.length - 1)];
-		super.image = newImage;
+		setImage(newImage);
 	}
 
 	public int getLane() {

@@ -1,5 +1,7 @@
 package com.myertse.dontstoprunning.entities;
 
+import android.graphics.Rect;
+
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Pixmap;
 import com.myertse.framework.impl.Actor2D;
@@ -8,6 +10,7 @@ public class MovingThing extends Actor2D {
 
 	protected Pixmap image;
 	
+	protected Rect hitbox;
 	protected int xPosition;
 	protected int yPosition;
 	protected int lanePosition;
@@ -20,13 +23,14 @@ public class MovingThing extends Actor2D {
 		setxPosition(initialX);
 		setyPosition(initialY);
 		setySpeed(initialSpeed);
+		hitbox = new Rect(initialX, initialY, initialX + image.getWidth(), initialY + image.getHeight());
 	}
 	
 	
 	@Override
 	public void update(float deltaTime) {
 		yPosition += ySpeed;
-		
+		hitbox.offsetTo(xPosition, yPosition);
 	}
 
 	@Override
@@ -82,6 +86,24 @@ public class MovingThing extends Actor2D {
 
 	public void setImage(Pixmap image) {
 		this.image = image;
+	}
+
+
+	public Rect getHitbox() {
+		return hitbox;
+	}
+
+
+	public void setHitbox(Rect hitbox) {
+		this.hitbox = hitbox;
+	}
+	
+	public boolean collidesWith(MovingThing thing)
+	{
+		if(this.hitbox.intersect(thing.getHitbox())) {
+			return true;
+		}
+		return false;
 	}
 	
 }
