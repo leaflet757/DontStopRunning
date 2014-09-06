@@ -4,9 +4,11 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.myertse.dontstoprunning.Actor_List;
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.dontstoprunning.InputWrapper;
 import com.myertse.dontstoprunning.entities.DodgeEnemy;
+import com.myertse.dontstoprunning.entities.JumpableEnemy;
 import com.myertse.dontstoprunning.entities.Player;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Game;
@@ -33,6 +35,7 @@ public class GameScreen extends Screen {
 	
 	// TODO test enemy
 	DodgeEnemy enemy;
+	JumpableEnemy bigEnemy;
 	Random rand;
 	
 	// lane & map information
@@ -70,7 +73,8 @@ public class GameScreen extends Screen {
 					-Assets.stepLeft.getHeight()
 					-Assets.protaganistMid.getHeight());
 		
-		enemy = new DodgeEnemy(Assets.playerShip, lanes[0], -Assets.playerShip.getHeight(), 20);
+		enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0], -Assets.dodge_enemy1.getHeight(), 10);
+		bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1], -Assets.dodge_enemy2.getHeight(), 10);
 	}
 
 	@Override
@@ -123,13 +127,30 @@ public class GameScreen extends Screen {
 			Log.d("Input", "inputWrapper is null");
 			break;
 		}
-		
+		Actor_List actor = Actor_List.BLOCK;
+		createEnemy(actor);
 		enemy.update(deltaTime);
 		if (enemy.getyPosition() > GAME.getGraphics().getHeight() - Assets.stepLeft.getHeight()) {
 			enemy.setyPosition(-enemy.getImage().getHeight());
 			enemy.setxPosition(lanes[rand.nextInt(3)]);
 		}
+		bigEnemy.update(deltaTime);
+		if (bigEnemy.getyPosition() > GAME.getGraphics().getHeight() - Assets.stepLeft.getHeight()) {
+			bigEnemy.setyPosition(-bigEnemy.getImage().getHeight());
+			bigEnemy.setxPosition(lanes[rand.nextInt(3)]);
+		}
 	
+	}
+
+	private void createEnemy(Actor_List actorType) {
+		switch(actorType)
+		{
+		case BLOCK:
+		{
+			//JumpableEnemy enemy = new JumpableEnemy(null, 0, 0, 1);
+			
+		}
+		}
 	}
 
 	@Override
@@ -140,6 +161,8 @@ public class GameScreen extends Screen {
 		g.drawPixmap(background, 0, 0);
 		
 		enemy.draw(g);
+		enemy.draw(g);
+		bigEnemy.draw(g);
 		//issue picture needs to scale		
 		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
 		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
