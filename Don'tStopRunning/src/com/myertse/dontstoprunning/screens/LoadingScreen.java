@@ -27,6 +27,12 @@ public class LoadingScreen extends Screen {
 		Assets.protaganistRight = g.newPixmap("images/charlie_right.png", PixmapFormat.ARGB4444);
 		Assets.stepLeft = g.newPixmap("images/step_left.png", PixmapFormat.ARGB4444);
 		Assets.stepRight = g.newPixmap("images/step_rite.png", PixmapFormat.ARGB4444);
+		Assets.jump_enemy1 = g.newPixmap("images/jump_enemy1.png", PixmapFormat.ARGB4444);
+		Assets.jump_enemy2 = g.newPixmap("images/jump_enemy2.png", PixmapFormat.ARGB4444);
+		Assets.jump_enemy3 = g.newPixmap("images/jump_enemy3.png", PixmapFormat.ARGB4444);
+		Assets.dodge_enemy1 = g.newPixmap("images/dodge_enemy1.png", PixmapFormat.ARGB4444);
+		Assets.dodge_enemy2 = g.newPixmap("images/dodge_enemy2.png", PixmapFormat.ARGB4444);
+		Assets.cliff = g.newPixmap("images/cliff.png", PixmapFormat.ARGB4444);
 		Assets.explosion = game.getAudio().newSound("sounds/explosion.ogg");
 		Assets.tap = game.getAudio().newSound("sounds/tp_effect.ogg");
 		game.setScreen(new GameScreen(game));

@@ -16,6 +16,12 @@ public class Assets {
 	public static Pixmap protaganistRight;
 	public static Pixmap stepLeft;
 	public static Pixmap stepRight;
+	public static Pixmap jump_enemy1;
+	public static Pixmap jump_enemy2;
+	public static Pixmap jump_enemy3;
+	public static Pixmap dodge_enemy1;
+	public static Pixmap dodge_enemy2;
+	public static Pixmap cliff;
 	
 	public static Sound tap;
 	public static Sound explosion;
