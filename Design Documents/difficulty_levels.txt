@@ -1,0 +1,16 @@
+0m = no obstacles
+
+25m = single object (normal speed)
+
+75m = introduction of moving objects
+
+125m - introduction of 2 obstacles same time
+
+200m = first chasm
+
+215m = 3 objects on screen
+
+250m = increase object desity and fequency
+
+
+

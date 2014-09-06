@@ -4,12 +4,12 @@ import java.util.Random;
 
 import android.util.Log;
 
-import com.myertse.dontstoprunning.Actor_List;
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.dontstoprunning.InputWrapper;
 import com.myertse.dontstoprunning.entities.DodgeEnemy;
 import com.myertse.dontstoprunning.entities.JumpableEnemy;
 import com.myertse.dontstoprunning.entities.Player;
+import com.myertse.dontstoprunning.enums.GameState;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
@@ -18,92 +18,114 @@ import com.myertse.framework.Screen;
 
 public class GameScreen extends Screen {
 
+	GameState gameState;
+	final int THRESHOLD = 3;
 	InputWrapper inputWrapper;
-	
-	
-	//Boolean watch variable for left button
+	int stepCounter = 0;
+	int previousStepCounter = 0;
+	float elapsedTime = 0;
+
+	// Boolean watch variable for left button
 	boolean isLeftPressed = false;
 	boolean isRightPressed = false;
-	
+
 	// Background Image
 	Pixmap background = Assets.background;
-	
-	
+
 	// TODO: MOVE TO SEPPARATE CLASS, PLAYER INFORMATION
-	//the Pixmap to draw
+	// the Pixmap to draw
 	Player player;
-	
+
 	// TODO test enemy
 	DodgeEnemy enemy;
 	JumpableEnemy bigEnemy;
 	Random rand;
-	
+
 	// lane & map information
-	//location values
+	// location values
 	int xLeftLane;
 	int xMidLane;
 	int xRightLane;
 	int[] lanes = new int[3];
-	
-	
+
 	public GameScreen(Game game) {
 		super(game);
 
 		init();
 	}
-	
+
 	private void init() {
 		Graphics g = GAME.getGraphics();
-		
-		inputWrapper = new InputWrapper(GAME.getInput(),
-				g.getWidth(), g.getHeight());
-		
-		
+
+		inputWrapper = new InputWrapper(GAME.getInput(), g.getWidth(),
+				g.getHeight());
+
 		// initialize map values
 		xLeftLane = 0;
-		xMidLane = g.getWidth()/3;
-		xRightLane = g.getWidth() - g.getWidth()/3;
+		xMidLane = g.getWidth() / 3;
+		xRightLane = g.getWidth() - g.getWidth() / 3;
 		lanes[0] = xLeftLane;
 		lanes[1] = xMidLane;
 		lanes[2] = xRightLane;
-		
+
 		rand = new Random();
-		
+
 		player = new Player(lanes, xMidLane, g.getHeight()
-					-Assets.stepLeft.getHeight()
-					-Assets.protaganistMid.getHeight());
-		
-		enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0], -Assets.dodge_enemy1.getHeight(), 10);
-		bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1], -Assets.dodge_enemy2.getHeight(), 10);
+				- Assets.stepLeft.getHeight()
+				- Assets.protaganistMid.getHeight());
+
+		enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0],
+				-Assets.dodge_enemy1.getHeight(), 1);
+		bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1],
+				-Assets.dodge_enemy2.getHeight(), 10);
+
+		gameState = GameState.STARTING;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
 		Log.d("GameScreen", "updating...");
-		
+
 		inputWrapper.update(deltaTime);
-		
+
+		switch (gameState) {
+		case STARTING:
+			gameState = GameState.RUNNING;
+			break;
+		case GAME_OVER:
+			break;
+		case PAUSED:
+			break;
+		case RUNNING:
+			runGame(deltaTime);
+			break;
+		}
+
+	}
+
+	private void runGame(float deltaTime) {
 		// TODO: get the latest game touch action
 		PlayerMovementState state = inputWrapper.getPlayerMovementState();
 		switch (state) {
 		case ALTERNATING:
-			// increase speed
 			Log.d("Input", "Alternating click");
+			player.step();
 			player.changeRunningImage();
+			stepCounter++;
 			break;
 		case DOUBLETAP_LEFT:
 			player.moveLeft();
 			isLeftPressed = true;
 			Assets.tap.play(1);
-			//assetToDraw = Assets.protaganistLeft;
+			// assetToDraw = Assets.protaganistLeft;
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
 			player.moveRight();
 			isRightPressed = true;
 			Assets.explosion.play(1);
-			//assetToDraw = Assets.protaganistRight;
+			// assetToDraw = Assets.protaganistRight;
 			Log.d("Input", "Double Tap Right");
 			break;
 		case JUMPING:
@@ -127,48 +149,72 @@ public class GameScreen extends Screen {
 			Log.d("Input", "inputWrapper is null");
 			break;
 		}
-		Actor_List actor = Actor_List.BLOCK;
-		createEnemy(actor);
+		// Actor_List actor = Actor_List.BLOCK;
+		// createEnemy(actor);
+		elapsedTime += deltaTime;
+		
+		
+		
+		if(elapsedTime > 1000)
+		{
+			if(stepCounter > previousStepCounter + THRESHOLD )
+			{
+				player.setSpeed((player.getSpeed() + 1));
+				elapsedTime = 0;
+			}
+			previousStepCounter = stepCounter;
+			elapsedTime = 0;
+		}
+		
+		enemy.setySpeed(player.getSpeed());
+		
 		enemy.update(deltaTime);
-		if (enemy.getyPosition() > GAME.getGraphics().getHeight() - Assets.stepLeft.getHeight()) {
+		if (enemy.getyPosition() > GAME.getGraphics().getHeight()
+				- Assets.stepLeft.getHeight()) {
 			enemy.setyPosition(-enemy.getImage().getHeight());
 			enemy.setxPosition(lanes[rand.nextInt(3)]);
 		}
 		bigEnemy.update(deltaTime);
-		if (bigEnemy.getyPosition() > GAME.getGraphics().getHeight() - Assets.stepLeft.getHeight()) {
+		if (bigEnemy.getyPosition() > GAME.getGraphics().getHeight()
+				- Assets.stepLeft.getHeight()) {
 			bigEnemy.setyPosition(-bigEnemy.getImage().getHeight());
 			bigEnemy.setxPosition(lanes[rand.nextInt(3)]);
 		}
-	
+
 	}
 
-	private void createEnemy(Actor_List actorType) {
-		switch(actorType)
-		{
-		case BLOCK:
-		{
-			//JumpableEnemy enemy = new JumpableEnemy(null, 0, 0, 1);
-			
-		}
-		}
-	}
+	// private void createEnemy(Actor_List actorType) {
+	// switch(actorType)
+	// {
+	// case BLOCK:
+	// {
+	// JumpableEnemy enemy = new JumpableEnemy(null, 0, 0, 1);
+
+	// }
+	// }
+	// }
 
 	@Override
 	public void present(float deltaTime) {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
-		
+
 		g.drawPixmap(background, 0, 0);
-		
-		enemy.draw(g);
+
 		enemy.draw(g);
 		bigEnemy.draw(g);
-		//issue picture needs to scale		
-		g.drawPixmap(Assets.stepLeft, 0, g.getHeight() - Assets.stepLeft.getHeight());
-		g.drawPixmap(Assets.stepRight, g.getWidth()/2, g.getHeight() - Assets.stepRight.getHeight());
-		
+		// issue picture needs to scale
+		g.drawPixmap(Assets.stepLeft, 0,
+				g.getHeight() - Assets.stepLeft.getHeight());
+		g.drawPixmap(Assets.stepRight, g.getWidth() / 2, g.getHeight()
+				- Assets.stepRight.getHeight());
+
+		if (player.collidesWith(enemy)) {
+			g.drawPixmap(Assets.dead_text, 0, 0);
+		}
+
 		player.draw(g);
-		
+
 		Log.d("GameScreen", "presenting...");
 	}
 

@@ -13,6 +13,10 @@ public class Player extends MovingThing {
 	int x;
 	int y;
 	
+	private float distance;
+	private int speed = 1;
+	private final float STEP_SIZE = 1;
+	
 	Pixmap[] runningImages;
 
 	public Player(int[] lanes, int initialX, int initialY) {
@@ -20,7 +24,7 @@ public class Player extends MovingThing {
 		this.lanes = lanes;
 		x = initialX;
 		y = initialY;
-		
+		distance = 0;
 		runningImages = new Pixmap[3];
 		runningImages[0] = Assets.protaganistLeft;
 		runningImages[1] = Assets.protaganistMid;
@@ -54,6 +58,18 @@ public class Player extends MovingThing {
 		} else {
 			imageIndex = 0;
 		}
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	public void step() {
+		
 	}
 
 }
