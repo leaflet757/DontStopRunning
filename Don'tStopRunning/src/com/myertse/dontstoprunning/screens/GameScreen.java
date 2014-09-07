@@ -1,13 +1,16 @@
 package com.myertse.dontstoprunning.screens;
 
+import java.util.List;
 import java.util.Random;
 
 import android.util.Log;
 
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.dontstoprunning.InputWrapper;
+import com.myertse.dontstoprunning.WorldManager;
 import com.myertse.dontstoprunning.entities.DodgeEnemy;
 import com.myertse.dontstoprunning.entities.JumpableEnemy;
+import com.myertse.dontstoprunning.entities.MovingThing;
 import com.myertse.dontstoprunning.entities.Player;
 import com.myertse.dontstoprunning.enums.GameState;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
@@ -18,6 +21,8 @@ import com.myertse.framework.Screen;
 
 public class GameScreen extends Screen {
 
+	WorldManager worldManager;
+	
 	GameState gameState;
 	final int THRESHOLD = 3;
 	InputWrapper inputWrapper;
@@ -37,8 +42,6 @@ public class GameScreen extends Screen {
 	Player player;
 
 	// TODO test enemy
-	DodgeEnemy enemy;
-	JumpableEnemy bigEnemy;
 	Random rand;
 
 	// lane & map information
@@ -55,6 +58,9 @@ public class GameScreen extends Screen {
 	}
 
 	private void init() {
+
+		worldManager = new WorldManager();
+		
 		Graphics g = GAME.getGraphics();
 
 		inputWrapper = new InputWrapper(GAME.getInput(), g.getWidth(),
@@ -74,10 +80,14 @@ public class GameScreen extends Screen {
 				- Assets.stepLeft.getHeight()
 				- Assets.protaganistMid.getHeight());
 
-		enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0],
+		// TODO: will eliminate this after testing
+		// 	     need more advanced spawner
+		DodgeEnemy enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0],
 				-Assets.dodge_enemy1.getHeight(), 1);
-		bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1],
+		worldManager.addObstacle(enemy);
+		JumpableEnemy bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1],
 				-Assets.dodge_enemy2.getHeight(), 10);
+		worldManager.addObstacle(bigEnemy);
 
 		gameState = GameState.STARTING;
 	}
@@ -94,6 +104,8 @@ public class GameScreen extends Screen {
 			gameState = GameState.RUNNING;
 			break;
 		case GAME_OVER:
+			Graphics g = GAME.getGraphics();
+			g.drawPixmap(Assets.dead_text, 0, 0);
 			break;
 		case PAUSED:
 			break;
@@ -105,7 +117,10 @@ public class GameScreen extends Screen {
 	}
 
 	private void runGame(float deltaTime) {
-		// TODO: get the latest game touch action
+		// TODO: should not be getting screen height here
+		final int HEIGHT = GAME.getGraphics().getHeight();
+		
+		// get the latest player touch movement state
 		PlayerMovementState state = inputWrapper.getPlayerMovementState();
 		switch (state) {
 		case ALTERNATING:
@@ -118,14 +133,12 @@ public class GameScreen extends Screen {
 			player.moveLeft();
 			isLeftPressed = true;
 			Assets.tap.play(1);
-			// assetToDraw = Assets.protaganistLeft;
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
 			player.moveRight();
 			isRightPressed = true;
 			Assets.explosion.play(1);
-			// assetToDraw = Assets.protaganistRight;
 			Log.d("Input", "Double Tap Right");
 			break;
 		case JUMPING:
@@ -134,11 +147,7 @@ public class GameScreen extends Screen {
 			break;
 		case STOPPING:
 			// speed slows
-			Log.d("Input", "Nothing Pressed");
-			break;
-		case STOPPED:
-			// game over
-			Log.d("Input", "Player Not Moving");
+			Log.d("Input", "Stopping - Nothing Pressed");
 			break;
 		case PAUSING:
 			// pause button clicked
@@ -151,10 +160,8 @@ public class GameScreen extends Screen {
 		}
 		// Actor_List actor = Actor_List.BLOCK;
 		// createEnemy(actor);
+		// TODO: find current player speed
 		elapsedTime += deltaTime;
-		
-		
-		
 		if(elapsedTime > 1000)
 		{
 			if(stepCounter > previousStepCounter + THRESHOLD )
@@ -166,55 +173,53 @@ public class GameScreen extends Screen {
 			elapsedTime = 0;
 		}
 		
-		enemy.setySpeed(player.getSpeed());
-		
-		enemy.update(deltaTime);
-		if (enemy.getyPosition() > GAME.getGraphics().getHeight()
-				- Assets.stepLeft.getHeight()) {
-			enemy.setyPosition(-enemy.getImage().getHeight());
-			enemy.setxPosition(lanes[rand.nextInt(3)]);
-		}
-		bigEnemy.update(deltaTime);
-		if (bigEnemy.getyPosition() > GAME.getGraphics().getHeight()
-				- Assets.stepLeft.getHeight()) {
-			bigEnemy.setyPosition(-bigEnemy.getImage().getHeight());
-			bigEnemy.setxPosition(lanes[rand.nextInt(3)]);
+		// Update all obstacles
+		List<MovingThing> obstList = worldManager.getObstacles();
+		for (int i = 0; i < obstList.size(); i++) {
+			MovingThing obst = obstList.get(i);
+			
+			// TODO: set obstacle speed relative to the player's speed
+			//obst.setySpeed(player.getySpeed());
+			
+			// Check for collisions
+			if (player.collidesWith(obst)) {
+				gameState = GameState.GAME_OVER;
+			}
+			
+			// check if obstacles are outside screen
+			obst.update(deltaTime);
+			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
+				obst.setyPosition(-obst.getImage().getHeight());
+				obst.setxPosition(lanes[rand.nextInt(3)]);
+			}
 		}
 
 	}
-
-	// private void createEnemy(Actor_List actorType) {
-	// switch(actorType)
-	// {
-	// case BLOCK:
-	// {
-	// JumpableEnemy enemy = new JumpableEnemy(null, 0, 0, 1);
-
-	// }
-	// }
-	// }
 
 	@Override
 	public void present(float deltaTime) {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
-
+		
+		// Display Background Image
 		g.drawPixmap(background, 0, 0);
 
-		enemy.draw(g);
-		bigEnemy.draw(g);
-		// issue picture needs to scale
+		// Draw Obstacles and Enemies
+		List<MovingThing> obstList = worldManager.getObstacles();
+		for (int i = 0; i < obstList.size(); i++) {
+			MovingThing obst = obstList.get(i);
+			obst.draw(g);
+		}
+
+		// Display the player
+		player.draw(g);
+
+		// Buttons and UI Drawing
 		g.drawPixmap(Assets.stepLeft, 0,
 				g.getHeight() - Assets.stepLeft.getHeight());
 		g.drawPixmap(Assets.stepRight, g.getWidth() / 2, g.getHeight()
 				- Assets.stepRight.getHeight());
-
-		if (player.collidesWith(enemy)) {
-			g.drawPixmap(Assets.dead_text, 0, 0);
-		}
-
-		player.draw(g);
-
+		
 		Log.d("GameScreen", "presenting...");
 	}
 
