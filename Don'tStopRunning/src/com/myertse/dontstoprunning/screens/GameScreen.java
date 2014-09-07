@@ -21,35 +21,26 @@ import com.myertse.framework.Screen;
 
 public class GameScreen extends Screen {
 
+	// Contains all information relevant to the player
 	WorldManager worldManager;
 	
-	GameState gameState;
-	final int THRESHOLD = 3;
+	// Controls Game Specific Input
 	InputWrapper inputWrapper;
-	int stepCounter = 0;
-	int previousStepCounter = 0;
-	float elapsedTime = 0;
-
-	// Boolean watch variable for left button
-	boolean isLeftPressed = false;
-	boolean isRightPressed = false;
-
+	
+	// Current state of the game
+	GameState gameState;
+	
 	// Background Image
 	Pixmap background = Assets.background;
 
-	// TODO: MOVE TO SEPPARATE CLASS, PLAYER INFORMATION
-	// the Pixmap to draw
+	// THIS IS THE PLAYER IF YOU COULD NOT TELL
 	Player player;
 
 	// TODO test enemy
 	Random rand;
-
-	// lane & map information
-	// location values
-	int xLeftLane;
-	int xMidLane;
-	int xRightLane;
-	int[] lanes = new int[3];
+	
+	final int THRESHOLD = 3;
+	float elapsedTime = 0;
 
 	public GameScreen(Game game) {
 		super(game);
@@ -59,33 +50,26 @@ public class GameScreen extends Screen {
 
 	private void init() {
 
-		worldManager = new WorldManager();
-		
 		Graphics g = GAME.getGraphics();
+		
+		worldManager = new WorldManager(g.getWidth(), g.getHeight());
 
 		inputWrapper = new InputWrapper(GAME.getInput(), g.getWidth(),
 				g.getHeight());
 
-		// initialize map values
-		xLeftLane = 0;
-		xMidLane = g.getWidth() / 3;
-		xRightLane = g.getWidth() - g.getWidth() / 3;
-		lanes[0] = xLeftLane;
-		lanes[1] = xMidLane;
-		lanes[2] = xRightLane;
 
 		rand = new Random();
 
-		player = new Player(lanes, xMidLane, g.getHeight()
-				- Assets.stepLeft.getHeight()
+		player = new Player(worldManager.getLanes(), worldManager.getMiddleLane(),
+				g.getHeight() - Assets.stepLeft.getHeight()
 				- Assets.protaganistMid.getHeight());
 
 		// TODO: will eliminate this after testing
 		// 	     need more advanced spawner
-		DodgeEnemy enemy = new DodgeEnemy(Assets.dodge_enemy1, lanes[0],
+		DodgeEnemy enemy = new DodgeEnemy(Assets.dodge_enemy1, worldManager.getLanes()[0],
 				-Assets.dodge_enemy1.getHeight(), 1);
 		worldManager.addObstacle(enemy);
-		JumpableEnemy bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, lanes[1],
+		JumpableEnemy bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, worldManager.getLanes()[1],
 				-Assets.dodge_enemy2.getHeight(), 10);
 		worldManager.addObstacle(bigEnemy);
 
@@ -127,17 +111,15 @@ public class GameScreen extends Screen {
 			Log.d("Input", "Alternating click");
 			player.step();
 			player.changeRunningImage();
-			stepCounter++;
+			worldManager.incrementStepCount();
 			break;
 		case DOUBLETAP_LEFT:
 			player.moveLeft();
-			isLeftPressed = true;
 			Assets.tap.play(1);
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
 			player.moveRight();
-			isRightPressed = true;
 			Assets.explosion.play(1);
 			Log.d("Input", "Double Tap Right");
 			break;
@@ -158,18 +140,17 @@ public class GameScreen extends Screen {
 			Log.d("Input", "inputWrapper is null");
 			break;
 		}
-		// Actor_List actor = Actor_List.BLOCK;
-		// createEnemy(actor);
+		
 		// TODO: find current player speed
 		elapsedTime += deltaTime;
 		if(elapsedTime > 1000)
 		{
-			if(stepCounter > previousStepCounter + THRESHOLD )
+			if(worldManager.getStepCount() > worldManager.getPreviousStepCounter() + THRESHOLD )
 			{
 				player.setSpeed((player.getSpeed() + 1));
 				elapsedTime = 0;
 			}
-			previousStepCounter = stepCounter;
+			worldManager.setPreviousStepCounter(worldManager.getStepCount());
 			elapsedTime = 0;
 		}
 		
@@ -183,14 +164,14 @@ public class GameScreen extends Screen {
 			
 			// Check for collisions
 			if (player.collidesWith(obst)) {
-				gameState = GameState.GAME_OVER;
+				// gameState = GameState.GAME_OVER;
 			}
 			
 			// check if obstacles are outside screen
 			obst.update(deltaTime);
 			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
 				obst.setyPosition(-obst.getImage().getHeight());
-				obst.setxPosition(lanes[rand.nextInt(3)]);
+				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);
 			}
 		}
 
@@ -201,13 +182,11 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
 
-		if(stepCounter < 1)
+		if(worldManager.getStepCount() < 1)
 		{
 			g.drawPixmap(Assets.title_page, 0, 0);
 			return;
-		}
-		g.drawPixmap(background, 0, 0);
-		
+		}		
 		//g.drawPixmap(Assets.pause_button, x, y)
 		
 		// Display Background Image
@@ -222,7 +201,7 @@ public class GameScreen extends Screen {
 
 		// Display the player
 		player.draw(g);
-		Log.d("GameScreen", "The value of step Counter is " + stepCounter);
+		Log.d("GameScreen", "The value of step Counter is " + worldManager.getStepCount());
 
 		// Buttons and UI Drawing
 		g.drawPixmap(Assets.stepLeft, 0,

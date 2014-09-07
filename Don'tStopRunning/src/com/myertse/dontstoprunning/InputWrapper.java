@@ -11,7 +11,9 @@ public class InputWrapper {
 	Input input;
 	
 	boolean released = true;
-	final int DOUBLETAP_INTERVAL = 1000;
+	// TODO: add interval for doubletap
+	final int DOUBLETAP_INTERVAL = 500;
+	float elapsedTime = 0;
 	int leftCounter = 0;
 	int rightCounter = 0;
 	
@@ -54,6 +56,7 @@ public class InputWrapper {
 		else if (released && input.isTouchDown(0)) {
 			int x = input.getTouchX(0);
 			int y = input.getTouchY(0);
+			elapsedTime += deltaTime;
 			if(x < (width/2) && y > (height)) {
 				if (lastButtonPressed == Button.LEFT) {
 					if (leftCounter % 2 == 1) {
