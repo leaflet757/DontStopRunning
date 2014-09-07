@@ -27,6 +27,11 @@ public class Assets {
 	public static Pixmap pause_screen;
 	public static Pixmap pause_button;
 	public static Pixmap step_counter;
+	public static Pixmap title_play_button;
+	public static Pixmap title_options_button;
+	public static Pixmap options_back_button;
+	public static Pixmap options_menu;
+	
 	
 	
 	public static Sound tap;

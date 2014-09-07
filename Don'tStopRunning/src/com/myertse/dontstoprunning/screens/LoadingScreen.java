@@ -3,6 +3,7 @@ package com.myertse.dontstoprunning.screens;
 import android.util.Log;
 
 import com.myertse.dontstoprunning.Assets;
+import com.myertse.dontstoprunning.MainActivity;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Graphics.PixmapFormat;
@@ -40,8 +41,13 @@ public class LoadingScreen extends Screen {
 		Assets.pause_button = g.newPixmap("images/pause_button.png", PixmapFormat.ARGB4444);
 		Assets.pause_screen = g.newPixmap("images/pause_menu.png", PixmapFormat.ARGB4444);
 		Assets.step_counter = g.newPixmap("images/step_counter.png", PixmapFormat.ARGB4444);
+		Assets.title_play_button = g.newPixmap("images/title_play_button.png", PixmapFormat.ARGB4444);
+		Assets.title_options_button = g.newPixmap("images/title_options_button.png", PixmapFormat.ARGB4444);
+		Assets.options_back_button = g.newPixmap("images/options_back_button.png", PixmapFormat.ARGB4444);
+		Assets.options_menu = g.newPixmap("images/options_menu.png", PixmapFormat.ARGB4444);
 		
-		game.setScreen(new GameScreen(game));
+		
+		game.setScreen(new MenuScreen(game));
 		Log.d("LoadingScreen", "updating...");
 	}
 

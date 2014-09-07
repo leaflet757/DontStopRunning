@@ -59,7 +59,7 @@ public class GameScreen extends Screen {
 
 
 		rand = new Random();
-
+		
 		player = new Player(worldManager.getLanes(), worldManager.getMiddleLane(),
 				g.getHeight() - Assets.stepLeft.getHeight()
 				- Assets.protaganistMid.getHeight());
@@ -159,7 +159,7 @@ public class GameScreen extends Screen {
 			MovingThing obst = obstList.get(i);
 			
 			// TODO: set obstacle speed relative to the player's speed
-			//obst.setySpeed(player.getySpeed());
+			obst.setySpeed(worldManager.getCurrentSpeed());
 			
 			// Check for collisions
 			if (player.collidesWith(obst)) {
@@ -181,11 +181,7 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
 
-		if(worldManager.getStepCount() < 1)
-		{
-			g.drawPixmap(Assets.title_page, 0, 0);
-			return;
-		}		
+		
 		//g.drawPixmap(Assets.pause_button, x, y)
 		
 		// Display Background Image

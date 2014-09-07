@@ -20,7 +20,7 @@ public class WorldManager {
 	private int distance;
 	private int stepCount;
 	private int previousStepCounter;
-	private float currentSpeed;
+	private int currentSpeed;
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacles;
@@ -89,11 +89,11 @@ public class WorldManager {
 		return lanes;
 	}
 
-	public float getCurrentSpeed() {
+	public int getCurrentSpeed() {
 		return currentSpeed;
 	}
 
-	public void setCurrentSpeed(float currentSpeed) {
+	public void setCurrentSpeed(int currentSpeed) {
 		this.currentSpeed = currentSpeed;
 	}
 }
