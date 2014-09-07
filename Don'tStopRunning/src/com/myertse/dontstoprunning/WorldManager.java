@@ -20,7 +20,7 @@ public class WorldManager {
 	private int distance;
 	private int stepCount;
 	private int previousStepCounter;
-	float currentSpeed;
+	private float currentSpeed;
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacles;
@@ -41,6 +41,12 @@ public class WorldManager {
 		
 		// initialize obstacles
 		obstacles = new ArrayList<MovingThing>();
+		
+		// initialize player information
+		distance = 0;
+		stepCount = 0;
+		previousStepCounter = -1;
+		currentSpeed = 0;
 	}
 	
 	public void addObstacle(MovingThing obj) {
@@ -81,5 +87,13 @@ public class WorldManager {
 
 	public int[] getLanes() {
 		return lanes;
+	}
+
+	public float getCurrentSpeed() {
+		return currentSpeed;
+	}
+
+	public void setCurrentSpeed(float currentSpeed) {
+		this.currentSpeed = currentSpeed;
 	}
 }

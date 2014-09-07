@@ -109,7 +109,6 @@ public class GameScreen extends Screen {
 		switch (state) {
 		case ALTERNATING:
 			Log.d("Input", "Alternating click");
-			player.step();
 			player.changeRunningImage();
 			worldManager.incrementStepCount();
 			break;
@@ -147,7 +146,7 @@ public class GameScreen extends Screen {
 		{
 			if(worldManager.getStepCount() > worldManager.getPreviousStepCounter() + THRESHOLD )
 			{
-				player.setSpeed((player.getSpeed() + 1));
+				worldManager.setCurrentSpeed(worldManager.getCurrentSpeed() + 1);
 				elapsedTime = 0;
 			}
 			worldManager.setPreviousStepCounter(worldManager.getStepCount());
