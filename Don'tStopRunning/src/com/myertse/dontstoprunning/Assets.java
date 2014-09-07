@@ -23,6 +23,11 @@ public class Assets {
 	public static Pixmap dodge_enemy2;
 	public static Pixmap cliff;
 	public static Pixmap dead_text;
+	public static Pixmap title_page;
+	public static Pixmap pause_screen;
+	public static Pixmap pause_button;
+	public static Pixmap step_counter;
+	
 	
 	public static Sound tap;
 	public static Sound explosion;

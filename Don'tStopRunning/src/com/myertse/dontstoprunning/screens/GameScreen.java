@@ -199,8 +199,14 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
 
+		if(stepCounter < 1)
+		{
+			g.drawPixmap(Assets.title_page, 0, 0);
+			return;
+		}
 		g.drawPixmap(background, 0, 0);
-
+		
+		//g.drawPixmap(Assets.pause_button, x, y)
 		enemy.draw(g);
 		bigEnemy.draw(g);
 		// issue picture needs to scale
@@ -214,6 +220,7 @@ public class GameScreen extends Screen {
 		}
 
 		player.draw(g);
+		Log.d("GameScreen", "The value of step Counter is " + stepCounter);
 
 		Log.d("GameScreen", "presenting...");
 	}

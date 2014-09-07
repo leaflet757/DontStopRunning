@@ -36,6 +36,11 @@ public class LoadingScreen extends Screen {
 		Assets.explosion = game.getAudio().newSound("sounds/explosion.ogg");
 		Assets.tap = game.getAudio().newSound("sounds/tp_effect.ogg");
 		Assets.dead_text = g.newPixmap("fonts/dead_text.png", PixmapFormat.ARGB4444);
+		Assets.title_page = g.newPixmap("images/title_page.png", PixmapFormat.ARGB4444);
+		Assets.pause_button = g.newPixmap("images/pause_button.png", PixmapFormat.ARGB4444);
+		Assets.pause_screen = g.newPixmap("images/pause_menu.png", PixmapFormat.ARGB4444);
+		Assets.step_counter = g.newPixmap("images/step_counter.png", PixmapFormat.ARGB4444);
+		
 		game.setScreen(new GameScreen(game));
 		Log.d("LoadingScreen", "updating...");
 	}
