@@ -39,9 +39,7 @@ public class GameScreen extends Screen {
 
 	// TODO test enemy
 	Random rand;
-	
-	final int THRESHOLD = 3;
-	float elapsedTime = 0;
+
 
 	public GameScreen(Game game) {
 		super(game);
@@ -130,6 +128,7 @@ public class GameScreen extends Screen {
 			break;
 		case STOPPING:
 			// speed slows
+			worldManager.decreaseSpeed();
 			Log.d("Input", "Stopping - Nothing Pressed");
 			break;
 		case PAUSING:
@@ -143,18 +142,8 @@ public class GameScreen extends Screen {
 			break;
 		}
 		
-		// TODO: find current player speed
-		elapsedTime += deltaTime;
-		if(elapsedTime > 1000)
-		{
-			if(worldManager.getStepCount() > worldManager.getPreviousStepCounter() + THRESHOLD )
-			{
-				worldManager.setCurrentSpeed(worldManager.getCurrentSpeed() + 1);
-				elapsedTime = 0;
-			}
-			worldManager.setPreviousStepCounter(worldManager.getStepCount());
-			elapsedTime = 0;
-		}
+		// Find current player speed
+		worldManager.calcCurrentSpeed(deltaTime);
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
@@ -184,8 +173,6 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
 
-		
-		//g.drawPixmap(Assets.pause_button, x, y)
 		
 		// Display Background Image
 		g.drawPixmap(background, 0, 0);
