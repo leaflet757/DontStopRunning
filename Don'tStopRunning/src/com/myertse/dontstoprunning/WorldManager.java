@@ -21,9 +21,12 @@ public class WorldManager {
 	private int stepCount;
 	private int previousStepCounter;
 	private int currentSpeed;
+	final int THRESHOLD = 3;
+	float elapsedTime = 0;
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacles;
+	
 	
 	public WorldManager(int width, int height ) {
 		
@@ -95,5 +98,30 @@ public class WorldManager {
 
 	public void setCurrentSpeed(int currentSpeed) {
 		this.currentSpeed = currentSpeed;
+	}
+
+	public void calcCurrentSpeed(float deltaTime) {
+		elapsedTime += deltaTime;
+		if(elapsedTime > 1000)
+		{
+			if(stepCount > previousStepCounter + THRESHOLD )
+			{
+				setCurrentSpeed(currentSpeed + 1);
+				elapsedTime = 0;
+			}
+			previousStepCounter = currentSpeed;
+			elapsedTime = 0;
+		}
+	}
+	
+	float elapsedAmount = 0;
+	final int INTERVAL_AMOUNT = 1;
+	final float decAmount = 0.4f;
+	public void decreaseSpeed() {
+		elapsedAmount += decAmount;
+		if (elapsedAmount >= INTERVAL_AMOUNT) {
+			currentSpeed--;
+			elapsedAmount = 0;
+		}
 	}
 }
