@@ -19,6 +19,8 @@ public interface Graphics {
 			int srcWidth, int srcHeight);
 
 	public void drawPixmap(Pixmap pixmap, int x, int y);
+	
+	public void drawText(int x, int y, int size, String text);
 
 	public int getWidth();
 

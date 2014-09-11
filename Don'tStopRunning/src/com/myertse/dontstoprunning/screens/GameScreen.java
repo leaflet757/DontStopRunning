@@ -31,6 +31,9 @@ public class GameScreen extends Screen {
 	// Current state of the game
 	GameState gameState;
 	
+	// Pause Screen
+	PauseScreen pauseScreen;
+	
 	// Background Image
 	Pixmap background = Assets.background;
 
@@ -63,15 +66,10 @@ public class GameScreen extends Screen {
 				g.getHeight() - Assets.stepLeft.getHeight()
 				- Assets.protaganistMid.getHeight());
 
-		// TODO: will eliminate this after testing
-		// 	     need more advanced spawner
-		DodgeEnemy enemy = new DodgeEnemy(Assets.dodge_enemy1, worldManager.getLanes()[0],
-				-Assets.dodge_enemy1.getHeight(), 1);
-		worldManager.addObstacle(enemy);
-		JumpableEnemy bigEnemy = new JumpableEnemy(Assets.dodge_enemy2, worldManager.getLanes()[1],
-				-Assets.dodge_enemy2.getHeight(), 10);
-		worldManager.addObstacle(bigEnemy);
-
+		
+		pauseScreen = new PauseScreen(GAME);
+		
+		
 		gameState = GameState.STARTING;
 	}
 
@@ -84,6 +82,7 @@ public class GameScreen extends Screen {
 
 		switch (gameState) {
 		case STARTING:
+			// TODO: reset game
 			gameState = GameState.RUNNING;
 			break;
 		case GAME_OVER:
@@ -91,7 +90,16 @@ public class GameScreen extends Screen {
 			g.drawPixmap(Assets.dead_text, 0, 0);
 			break;
 		case PAUSED:
-			pause();
+			if (pauseScreen.isBackButtonPressed()) {
+				gameState = GameState.RUNNING;
+			} 
+			else if (pauseScreen.isOptionsPressed()) {
+				// TODO: change screen
+			}
+			else if (pauseScreen.isRestartPressed()) {
+				gameState = GameState.STARTING;
+			}
+			
 			break;
 		case RUNNING:
 			runGame(deltaTime);
@@ -142,8 +150,10 @@ public class GameScreen extends Screen {
 			break;
 		}
 		
-		// Find current player speed
+		// Find current player speed & distance
+		worldManager.update(deltaTime);
 		worldManager.calcCurrentSpeed(deltaTime);
+		worldManager.calcDistance(deltaTime);
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
@@ -196,15 +206,21 @@ public class GameScreen extends Screen {
 		g.drawPixmap(Assets.stepRight, g.getWidth() / 2, g.getHeight()
 				- Assets.stepRight.getHeight());
 		
+		// Draw Distance and Speed
+		g.drawText(200, 200, 20, "" + worldManager.getDistance());
+		
+		// Draw pause screen if paused
+		if (gameState == GameState.PAUSED) {
+			pauseScreen.drawPauseScreen(g);
+		}
+		
+		
 		Log.d("GameScreen", "presenting...");
 	}
 
 	@Override
 	public void pause() {
-		
-		Graphics g = GAME.getGraphics();
-		g.drawPixmap(Assets.pause_screen, 100, 200);
-		
+		// TODO Auto-generated method stub		
 		Log.d("GameScreen", "pausing...");
 	}
 

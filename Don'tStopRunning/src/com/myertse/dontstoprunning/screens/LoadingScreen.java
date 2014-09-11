@@ -45,7 +45,7 @@ public class LoadingScreen extends Screen {
 		Assets.title_options_button = g.newPixmap("images/title_options_button.png", PixmapFormat.ARGB4444);
 		Assets.options_back_button = g.newPixmap("images/options_back_button.png", PixmapFormat.ARGB4444);
 		Assets.options_menu = g.newPixmap("images/options_menu.png", PixmapFormat.ARGB4444);
-		Assets.pause_back_button = g.newPixmap("images/pause_back_button", PixmapFormat.ARGB4444);
+		Assets.pause_back_button = g.newPixmap("images/pause_back_button.png", PixmapFormat.ARGB4444);
 		
 		
 		game.setScreen(new MenuScreen(game));

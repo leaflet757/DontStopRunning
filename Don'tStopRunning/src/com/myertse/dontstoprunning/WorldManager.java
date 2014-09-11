@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.myertse.dontstoprunning.entities.MovingThing;
+import com.myertse.dontstoprunning.enums.SpawnerState;
 
 
 public class WorldManager {
@@ -23,9 +24,17 @@ public class WorldManager {
 	private int currentSpeed;
 	final int THRESHOLD = 3;
 	float elapsedTime = 0;
+	int displayDistance = 0;
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacles;
+	SpawnerState spawnState;
+	final int LEVEL_1 = 25;
+	final int LEVEL_2 = 75;
+	final int LEVEL_3 = 125;
+	final int LEVEL_4 = 200;
+	final int LEVEL_5 = 215;
+	final int LEVEL_6 = 250;
 	
 	
 	public WorldManager(int width, int height ) {
@@ -69,7 +78,7 @@ public class WorldManager {
 	}
 
 	public int getDistance() {
-		return distance;
+		return displayDistance;
 	}
 
 	public void setDistance(int distance) {
@@ -118,12 +127,58 @@ public class WorldManager {
 	final int INTERVAL_AMOUNT = 1;
 	final float decAmount = 0.001f; // TODO: this is bad
 	public void decreaseSpeed() {
-		elapsedAmount += decAmount;
-		if (elapsedAmount >= INTERVAL_AMOUNT) {
-			if (currentSpeed > 0) {
-				currentSpeed--;
-			}
-			elapsedAmount = 0;
+		if (currentSpeed > 1) {
+			currentSpeed--;
+		}
+//		elapsedAmount += decAmount;
+//		if (elapsedAmount >= INTERVAL_AMOUNT) {
+//			if (currentSpeed > 1) {
+//				currentSpeed--;
+//			}
+//			elapsedAmount = 0;
+//		}
+	}
+
+	public void calcDistance(float deltaTime) {
+		// TODO
+		distance = distance + currentSpeed;
+		displayDistance = distance/50;
+	}
+
+	public void update(float deltaTime) {
+		
+		if (displayDistance > LEVEL_1) {
+			spawnState.setValue(SpawnerState.SINGLE_SPAWN.getValue());
+		}
+		if (displayDistance > LEVEL_2) {
+			spawnState.setValue(spawnState.getValue() | SpawnerState.MOVING_OBJECT_SPAWN.getValue());  
+		}
+		if (displayDistance > LEVEL_3) {
+			spawnState.setValue(spawnState.getValue() | SpawnerState.DOUBLE_OBJECT_SPAWN.getValue());
+		}
+		if (displayDistance > LEVEL_4) {
+			spawnState.setValue(spawnState.getValue() | SpawnerState.CHASM_SPAWN.getValue());
+		}
+		if (displayDistance > LEVEL_5) {
+			spawnState.setValue(spawnState.getValue() | SpawnerState.TRIPLE_OBJECT_SPAWN.getValue());
+		}
+		if (displayDistance > LEVEL_6) {
+			spawnState.setValue(spawnState.getValue() | SpawnerState.END_GAME_SPAWN.getValue());
+		}
+		
+		// spawns an obstacle based on the spawning state
+		spawnObstacle();
+		
+		// Calculate speed and distances
+		calcCurrentSpeed(deltaTime);
+		calcDistance(deltaTime);
+	}
+
+	private void spawnObstacle() {
+		// TODO Auto-generated method stub
+		if ((spawnState.getValue() & SpawnerState.SINGLE_SPAWN.getValue()) 
+				== SpawnerState.SINGLE_SPAWN.getValue()) {
+			
 		}
 	}
 }
