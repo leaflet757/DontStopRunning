@@ -116,11 +116,13 @@ public class WorldManager {
 	
 	float elapsedAmount = 0;
 	final int INTERVAL_AMOUNT = 1;
-	final float decAmount = 0.4f;
+	final float decAmount = 0.001f; // TODO: this is bad
 	public void decreaseSpeed() {
 		elapsedAmount += decAmount;
 		if (elapsedAmount >= INTERVAL_AMOUNT) {
-			currentSpeed--;
+			if (currentSpeed > 0) {
+				currentSpeed--;
+			}
 			elapsedAmount = 0;
 		}
 	}
