@@ -100,6 +100,13 @@ public class AndroidGraphics implements Graphics {
 		paint.setColor(color);
 		canvas.drawPoint(x, y, paint);
 	}
+	
+	@Override
+	public void drawText(int x, int y, int size, String text) {
+		paint.setTextSize(size);
+		paint.setStyle(Style.FILL);
+		canvas.drawText(text, x, y, paint);
+	}
 
 	@Override
 	public void drawLine(int x, int y, int x2, int y2, int color) {

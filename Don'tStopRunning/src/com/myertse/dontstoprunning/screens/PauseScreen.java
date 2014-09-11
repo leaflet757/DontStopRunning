@@ -6,22 +6,20 @@ import com.myertse.framework.Graphics;
 import com.myertse.framework.Input;
 import com.myertse.framework.Screen;
 
-public class PauseScreen extends Screen{
+public class PauseScreen {
 	
-	Screen gameScreenToSave;
-	int backButtonX = 46;
-	int backButtonY = 267;
+	Game game;
+	int backButtonX = 146;
+	int backButtonY = 467;
+	
 	boolean released = false;
 	
-	public PauseScreen(Game game, Screen screen) {
-		super(game);
-		gameScreenToSave = screen;
+	public PauseScreen(Game game) {
+		this.game = game;
 	}
 
-	@Override
-	public void update(float deltaTime) {
-		
-		Input input = GAME.getInput();
+	public boolean isBackButtonPressed() {
+		Input input = game.getInput();
 		if(!input.isTouchDown(0))
 		{
 			released = true;
@@ -34,38 +32,25 @@ public class PauseScreen extends Screen{
 				yTouch >= backButtonY && yTouch <= backButtonY + Assets.pause_back_button.getWidth() &&
 				released == true)
 		{
-			GAME.setScreen(gameScreenToSave);
-			while(input.isTouchDown(0))
-			{
-				//wait for release
-			}
+			released = false;
+			return true;
 		}
+		
+		return false;
 	}
 
-	@Override
-	public void present(float deltaTime) {
-		// TODO Auto-generated method stub
-		Graphics g = GAME.getGraphics();
-		g.clear(0);
-		g.drawPixmap(Assets.pause_back_button, 100, 200);
+	public void drawPauseScreen(Graphics g) {
+		g.drawPixmap(Assets.pause_screen, 100, 200);
 	}
 
-	@Override
-	public void pause() {
+	public boolean isOptionsPressed() {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
 
-	@Override
-	public void resume() {
+	public boolean isRestartPressed() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
+		return false;
 	}
 
 }
