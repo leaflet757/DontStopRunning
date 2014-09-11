@@ -167,17 +167,39 @@ public class WorldManager {
 		}
 		
 		// spawns an obstacle based on the spawning state
-		spawnObstacle();
+		if (objectShouldSpawn()) {
+			spawnObstacle();
+		}
 		
 		// Calculate speed and distances
 		calcCurrentSpeed(deltaTime);
 		calcDistance(deltaTime);
 	}
 
-	private void spawnObstacle() {
+	private boolean objectShouldSpawn() {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private void spawnObstacle() {
 		if ((spawnState.getValue() & SpawnerState.SINGLE_SPAWN.getValue()) 
 				== SpawnerState.SINGLE_SPAWN.getValue()) {
+			
+		}
+		if ((spawnState.getValue() & SpawnerState.CHASM_SPAWN.getValue()) 
+				== SpawnerState.CHASM_SPAWN.getValue()) {
+			
+		}
+		if ((spawnState.getValue() & SpawnerState.DOUBLE_OBJECT_SPAWN.getValue()) 
+				== SpawnerState.END_GAME_SPAWN.getValue()) {
+			
+		}
+		if ((spawnState.getValue() & SpawnerState.MOVING_OBJECT_SPAWN.getValue()) 
+				== SpawnerState.MOVING_OBJECT_SPAWN.getValue()) {
+			
+		}
+		if ((spawnState.getValue() & SpawnerState.TRIPLE_OBJECT_SPAWN.getValue()) 
+				== SpawnerState.TRIPLE_OBJECT_SPAWN.getValue()) {
 			
 		}
 	}

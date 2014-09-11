@@ -168,12 +168,13 @@ public class GameScreen extends Screen {
 				// gameState = GameState.GAME_OVER;
 			}
 			
-			// check if obstacles are outside screen
-			obst.update(deltaTime);
-			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
-				obst.setyPosition(-obst.getImage().getHeight());
-				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);
-			}
+			// TODO: check if obstacles are outside screen
+			// if yes then mark the object for deletion
+//			obst.update(deltaTime);
+//			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
+//				obst.setyPosition(-obst.getImage().getHeight());
+//				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);
+//			}
 		}
 
 	}
