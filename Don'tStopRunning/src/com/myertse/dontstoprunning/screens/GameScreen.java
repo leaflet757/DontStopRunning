@@ -16,6 +16,7 @@ import com.myertse.dontstoprunning.enums.GameState;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
+import com.myertse.framework.Input;
 import com.myertse.framework.Pixmap;
 import com.myertse.framework.Screen;
 
@@ -92,6 +93,7 @@ public class GameScreen extends Screen {
 			g.drawPixmap(Assets.dead_text, 0, 0);
 			break;
 		case PAUSED:
+			pause();
 			break;
 		case RUNNING:
 			runGame(deltaTime);
@@ -132,6 +134,7 @@ public class GameScreen extends Screen {
 			break;
 		case PAUSING:
 			// pause button clicked
+			gameState = GameState.PAUSED;
 			Log.d("Input", "Player Paused Game");
 			break;
 		default:
@@ -186,6 +189,8 @@ public class GameScreen extends Screen {
 		
 		// Display Background Image
 		g.drawPixmap(background, 0, 0);
+		g.drawPixmap(Assets.pause_button, 0, 0);
+		g.drawPixmap(Assets.step_counter, g.getWidth() - Assets.step_counter.getWidth(), 0);
 
 		// Draw Obstacles and Enemies
 		List<MovingThing> obstList = worldManager.getObstacles();
@@ -209,7 +214,10 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		
+		Graphics g = GAME.getGraphics();
+		g.drawPixmap(Assets.pause_screen, 100, 200);
+		
 		Log.d("GameScreen", "pausing...");
 	}
 
