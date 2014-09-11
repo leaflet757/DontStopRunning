@@ -14,6 +14,8 @@ public class MenuScreen extends Screen {
 	int optionsButtonX = 208;
 	int optionsButtonY = 630;
 	
+	boolean released = false;
+	
 	public MenuScreen(Game game) {
 		super(game);
 		// TODO Auto-generated constructor stub
@@ -23,13 +25,18 @@ public class MenuScreen extends Screen {
 	public void update(float deltaTime) {
 		// TODO check to see what button was pressed on the main menu
 		Input input = GAME.getInput();
+		if(!input.isTouchDown(0))
+		{
+			released = true;
+		}
 		int xTouch = input.getTouchX(0);
 		int yTouch = input.getTouchY(0);
 		
 		//If in start button range
 		if(input.isTouchDown(0) && 
 				xTouch >= startButtonX && xTouch <= startButtonX + Assets.title_play_button.getWidth() &&
-				yTouch >= startButtonY && yTouch <= startButtonY + Assets.title_play_button.getHeight())
+				yTouch >= startButtonY && yTouch <= startButtonY + Assets.title_play_button.getHeight() &&
+				released == true)
 		{
 			GAME.setScreen(new GameScreen(GAME));
 		}
@@ -37,7 +44,8 @@ public class MenuScreen extends Screen {
 		//if in options button range
 		if(input.isTouchDown(0) &&
 				xTouch >= optionsButtonX && xTouch <= optionsButtonX + Assets.title_options_button.getWidth() &&
-				yTouch >= optionsButtonY && yTouch <= optionsButtonY + Assets.title_options_button.getHeight())
+				yTouch >= optionsButtonY && yTouch <= optionsButtonY + Assets.title_options_button.getHeight() &&
+				released == true)
 		{
 			GAME.setScreen(new OptionsScreen(GAME, this));
 		}

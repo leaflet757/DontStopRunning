@@ -1,5 +1,6 @@
 package com.myertse.dontstoprunning;
 
+import com.myertse.dontstoprunning.enums.GameState;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Input;
 
@@ -80,6 +81,12 @@ public class InputWrapper {
 				}
 				lastButtonPressed = Button.RIGHT;
 				rightCounter++;
+			}
+			if(input.isTouchDown(0) &&
+					x >= 0 && x <= Assets.pause_button.getWidth() &&
+					y >= 0 && y <= Assets.pause_button.getHeight())
+			{
+				currentState = PlayerMovementState.PAUSING;
 			}
 			released = false;
 		// check to see if nothing is touching

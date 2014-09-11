@@ -31,6 +31,7 @@ public class Assets {
 	public static Pixmap title_options_button;
 	public static Pixmap options_back_button;
 	public static Pixmap options_menu;
+	public static Pixmap pause_back_button;
 	
 	
 	

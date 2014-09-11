@@ -1,22 +1,21 @@
 package com.myertse.dontstoprunning.screens;
 
-import android.util.Log;
-
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Input;
 import com.myertse.framework.Screen;
 
-public class OptionsScreen extends Screen {
+public class PauseScreen extends Screen{
 	
-	Screen previousScreen;
+	Screen gameScreenToSave;
 	int backButtonX = 46;
-	int backButtonY = 570;
+	int backButtonY = 267;
 	boolean released = false;
-	public OptionsScreen(Game game, Screen screen) {
+	
+	public PauseScreen(Game game, Screen screen) {
 		super(game);
-		previousScreen = screen;
+		gameScreenToSave = screen;
 	}
 
 	@Override
@@ -31,11 +30,11 @@ public class OptionsScreen extends Screen {
 		int yTouch = input.getTouchY(0);
 		
 		if(input.isTouchDown(0) &&
-				xTouch >= backButtonX && xTouch <= backButtonX + Assets.options_back_button.getWidth() &&
-				yTouch >= backButtonY && yTouch <= backButtonY + Assets.options_back_button.getWidth() &&
+				xTouch >= backButtonX && xTouch <= backButtonX + Assets.pause_back_button.getWidth() &&
+				yTouch >= backButtonY && yTouch <= backButtonY + Assets.pause_back_button.getWidth() &&
 				released == true)
 		{
-			GAME.setScreen(previousScreen);
+			GAME.setScreen(gameScreenToSave);
 			while(input.isTouchDown(0))
 			{
 				//wait for release
@@ -48,7 +47,7 @@ public class OptionsScreen extends Screen {
 		// TODO Auto-generated method stub
 		Graphics g = GAME.getGraphics();
 		g.clear(0);
-		g.drawPixmap(Assets.options_menu, 0,0);
+		g.drawPixmap(Assets.pause_back_button, 100, 200);
 	}
 
 	@Override
