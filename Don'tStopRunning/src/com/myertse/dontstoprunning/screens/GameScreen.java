@@ -157,7 +157,7 @@ public class GameScreen extends Screen {
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
-		for (int i = 0; i < obstList.size(); i++) {
+		for (int i = 0; i < worldManager.getObstacleCount(); i++) {
 			MovingThing obst = obstList.get(i);
 			
 			// TODO: set obstacle speed relative to the player's speed
@@ -196,7 +196,7 @@ public class GameScreen extends Screen {
 			MovingThing obst = obstList.get(i);
 			obst.draw(g);
 		}
-
+		
 		// Display the player
 		player.draw(g);
 		Log.d("GameScreen", "The value of step Counter is " + worldManager.getStepCount());
@@ -210,6 +210,7 @@ public class GameScreen extends Screen {
 		// Draw Distance and Speed
 		g.drawText(200, 200, 20, "" + worldManager.getDistance());
 		g.drawText(200, 230, 30, "" + worldManager.getCurrentSpeed());
+		g.drawText(200, 260, 32, "" + worldManager.getNextSpawnDistance());
 		
 		// Draw pause screen if paused
 		if (gameState == GameState.PAUSED) {

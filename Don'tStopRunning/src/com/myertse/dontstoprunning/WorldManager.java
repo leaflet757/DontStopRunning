@@ -2,14 +2,13 @@ package com.myertse.dontstoprunning;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Random;
 
 import android.util.Log;
 
-import com.myertse.dontstoprunning.entities.DodgeEnemy;
 import com.myertse.dontstoprunning.entities.MovingThing;
 import com.myertse.dontstoprunning.enums.SpawnerState;
+import com.myertse.framework.impl.Pool;
 
 
 public class WorldManager {
@@ -31,9 +30,14 @@ public class WorldManager {
 	final int THRESHOLD = 3;
 	float elapsedTime = 0;
 	int displayDistance = 0;
+	int previousDisplayDistance = 0;
 	
 	// Obstacle Information
-	ArrayList<MovingThing> obstacles;
+	ArrayList<MovingThing> obstacleList;
+	int obstacleCount = 0;
+	Pool<MovingThing> obstaclePool;
+	ObstacleFactory obstacleFactory;
+	
 	SpawnerState spawnState;
 	final int LEVEL_1 = 25; // TODO - We will have to change max speed and level markers
 	final int LEVEL_2 = 75;
@@ -42,6 +46,8 @@ public class WorldManager {
 	final int LEVEL_5 = 215;
 	final int LEVEL_6 = 250;
 	
+	Random randD;
+	int distanceCounter;
 	
 	public WorldManager(int width, int height ) {
 		
@@ -58,22 +64,28 @@ public class WorldManager {
 		lanes[2] = xRightLane;
 		
 		// initialize obstacles
-		obstacles = new ArrayList<MovingThing>();
+		obstacleList = new ArrayList<MovingThing>(10);
+		obstacleFactory = new ObstacleFactory();
+		obstaclePool = new Pool<MovingThing>(obstacleFactory, 20);
 		
 		// initialize player information
 		distance = 0;
 		stepCount = 0;
 		previousStepCounter = -1;
 		currentSpeed = 0;
+		
+		randD = new Random();
+		distanceCounter = LEVEL_1;
 
 	}
 	
-	public void addObstacle(MovingThing obj) {
-		obstacles.add(obj);
+	public void addObstacle() {
+		obstacleList.add(obstaclePool.newObject());
+		obstacleCount++;
 	}
 	
 	public List<MovingThing> getObstacles() {
-		return obstacles;
+		return obstacleList;
 	}
 
 	public int getStepCount() {
@@ -147,7 +159,6 @@ public class WorldManager {
 	}
 
 	public void calcDistance(float deltaTime) {
-		// TODO
 		distance = distance + currentSpeed;
 		displayDistance = distance/50;
 	}
@@ -156,30 +167,36 @@ public class WorldManager {
 		
 		if (displayDistance > LEVEL_1) {
 			spawnState = SpawnerState.SINGLE_SPAWN;
-			Log.d("LEVEL 1", "Less than 25");
+			obstacleFactory.setCurrentSpawnState(spawnState);
+			Log.d("LEVEL 1", "Greater than 25");
 		}
 		else if (displayDistance > LEVEL_2) {
-			Log.d("LEVEL 2", "Less than 75");
+			Log.d("LEVEL 2", "Greater than 75");
 			decAmount += 0.01;
-			spawnState = SpawnerState.MOVING_OBJECT_SPAWN;  
+			spawnState = SpawnerState.MOVING_OBJECT_SPAWN;
+			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
 		else if (displayDistance > LEVEL_3) {
-			Log.d("LEVEL 3", "Less than 125");
+			Log.d("LEVEL 3", "Greater than 125");
 			spawnState = SpawnerState.DOUBLE_OBJECT_SPAWN;
+			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
 		else if (displayDistance > LEVEL_4) {
-			Log.d("LEVEL 4", "Less than 200");
+			Log.d("LEVEL 4", "Greater than 200");
 			decAmount += 0.01;
 			spawnState = SpawnerState.CHASM_SPAWN;
+			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
 		else if (displayDistance > LEVEL_5) {
-			Log.d("LEVEL 5", "Less than 215");
+			Log.d("LEVEL 5", "Greater than 215");
 			spawnState = SpawnerState.TRIPLE_OBJECT_SPAWN;
+			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
 		else if (displayDistance > LEVEL_6) {
-			Log.d("LEVEL 6", "Less than 250");
+			Log.d("LEVEL 6", "Greater than 250");
 			decAmount += 0.01;
 			spawnState = SpawnerState.END_GAME_SPAWN;
+			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
 		// TODO: should game still get harder over time?
 		
@@ -187,7 +204,7 @@ public class WorldManager {
 		
 		// spawns an obstacle based on the spawning state
 		if (objectShouldSpawn()) {
-			//spawnObstacle();
+			spawnObstacle();
 		}
 		
 		// Calculate speed and distances
@@ -195,31 +212,28 @@ public class WorldManager {
 		calcDistance(deltaTime);
 	}
 
+	/*
+	 * A set of obstacles should spawn between 8-12 distance
+	 */
 	private boolean objectShouldSpawn() {
-		return true;
+		if (displayDistance >= previousDisplayDistance + distanceCounter) {
+			previousDisplayDistance = displayDistance;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
+	public int getNextSpawnDistance() {
+		return previousDisplayDistance + distanceCounter;
+	}
+	
 	private void spawnObstacle() {
-		if ((spawnState.getValue() & SpawnerState.SINGLE_SPAWN.getValue()) 
-				== SpawnerState.SINGLE_SPAWN.getValue()) {
-			if (obstacles.size() < 10)
-			obstacles.add(new DodgeEnemy(Assets.dodge_enemy1, 0, 0, currentSpeed));
-		}
-		if ((spawnState.getValue() & SpawnerState.CHASM_SPAWN.getValue()) 
-				== SpawnerState.CHASM_SPAWN.getValue()) {
-			
-		}
-		if ((spawnState.getValue() & SpawnerState.DOUBLE_OBJECT_SPAWN.getValue()) 
-				== SpawnerState.END_GAME_SPAWN.getValue()) {
-			
-		}
-		if ((spawnState.getValue() & SpawnerState.MOVING_OBJECT_SPAWN.getValue()) 
-				== SpawnerState.MOVING_OBJECT_SPAWN.getValue()) {
-			
-		}
-		if ((spawnState.getValue() & SpawnerState.TRIPLE_OBJECT_SPAWN.getValue()) 
-				== SpawnerState.TRIPLE_OBJECT_SPAWN.getValue()) {
-			
-		}
+		distanceCounter = randD.nextInt(5) + 8;
+		// TODO: still need to spawn obstacle
+	}
+
+	public int getObstacleCount() {
+		return obstacleCount;
 	}
 }
