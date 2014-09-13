@@ -12,11 +12,11 @@ public class PauseScreen {
 	int backButtonX = 146;
 	int backButtonY = 467;
 	int tryAgainX = 136;
-	int tryAgainY = 471;
+	int tryAgainY = 371;
 	
 	int optionsX = 139;
 	int optionsY = 239;
-	//36,271 try again
+	//36,171 try again
 	//39,39 options
 	
 	boolean released = false;

@@ -94,11 +94,11 @@ public class GameScreen extends Screen {
 				gameState = GameState.RUNNING;
 			}
 			else if (pauseScreen.isOptionsButtonPressed()) {
-			GAME.setScreen(new OptionsScreen(GAME, this));
+				GAME.setScreen(new OptionsScreen(GAME, this));
 			}
 			else if (pauseScreen.isRestartButtonPressed()) {
 				gameState = GameState.STARTING;
-				init();
+				GAME.setScreen(new GameScreen(GAME));
 			}
 			
 			break;
