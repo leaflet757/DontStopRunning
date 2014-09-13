@@ -92,12 +92,13 @@ public class GameScreen extends Screen {
 		case PAUSED:
 			if (pauseScreen.isBackButtonPressed()) {
 				gameState = GameState.RUNNING;
-			} 
-			else if (pauseScreen.isOptionsPressed()) {
-				// TODO: change screen
 			}
-			else if (pauseScreen.isRestartPressed()) {
+			else if (pauseScreen.isOptionsButtonPressed()) {
+			GAME.setScreen(new OptionsScreen(GAME, this));
+			}
+			else if (pauseScreen.isRestartButtonPressed()) {
 				gameState = GameState.STARTING;
+				init();
 			}
 			
 			break;
@@ -150,10 +151,9 @@ public class GameScreen extends Screen {
 			break;
 		}
 		
-		// Find current player speed & distance
+
+		// Update the world
 		worldManager.update(deltaTime);
-		worldManager.calcCurrentSpeed(deltaTime);
-		worldManager.calcDistance(deltaTime);
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
@@ -168,12 +168,13 @@ public class GameScreen extends Screen {
 				// gameState = GameState.GAME_OVER;
 			}
 			
-			// check if obstacles are outside screen
-			obst.update(deltaTime);
-			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
-				obst.setyPosition(-obst.getImage().getHeight());
-				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);
-			}
+			// TODO: check if obstacles are outside screen
+			// if yes then mark the object for deletion
+//			obst.update(deltaTime);
+//			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
+//				obst.setyPosition(-obst.getImage().getHeight());
+//				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);
+//			}
 		}
 
 	}
@@ -208,6 +209,7 @@ public class GameScreen extends Screen {
 		
 		// Draw Distance and Speed
 		g.drawText(200, 200, 20, "" + worldManager.getDistance());
+		g.drawText(200, 230, 30, "" + worldManager.getCurrentSpeed());
 		
 		// Draw pause screen if paused
 		if (gameState == GameState.PAUSED) {
