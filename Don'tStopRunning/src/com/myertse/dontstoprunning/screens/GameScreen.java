@@ -151,10 +151,8 @@ public class GameScreen extends Screen {
 			break;
 		}
 		
-		// Find current player speed & distance
+		// Update the world
 		worldManager.update(deltaTime);
-		worldManager.calcCurrentSpeed(deltaTime);
-		worldManager.calcDistance(deltaTime);
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
@@ -210,6 +208,7 @@ public class GameScreen extends Screen {
 		
 		// Draw Distance and Speed
 		g.drawText(200, 200, 20, "" + worldManager.getDistance());
+		g.drawText(200, 230, 30, "" + worldManager.getCurrentSpeed());
 		
 		// Draw pause screen if paused
 		if (gameState == GameState.PAUSED) {
