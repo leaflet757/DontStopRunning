@@ -14,7 +14,26 @@ public class ObstacleFactory implements PoolObjectFactory<MovingThing>{
 	
 	@Override
 	public MovingThing createObject() {
-		// TODO Auto-generated method stub
+		switch(spawnState) {
+		case CHASM_SPAWN:
+			
+			break;
+		case DOUBLE_OBJECT_SPAWN:
+			
+			break;
+		case END_GAME_SPAWN:
+			
+			break;
+		case MOVING_OBJECT_SPAWN:
+			
+			break;
+		case SINGLE_SPAWN:
+			
+			break;
+		case TRIPLE_OBJECT_SPAWN:
+			
+			break;
+		}
 		return null;
 	}
 

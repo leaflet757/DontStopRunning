@@ -87,7 +87,8 @@ public class GameScreen extends Screen {
 			break;
 		case GAME_OVER:
 			Graphics g = GAME.getGraphics();
-			g.drawPixmap(Assets.dead_text, 0, 0);
+			GAME.setScreen(new EndScreen(GAME));
+			gameState = GameState.STARTING;
 			break;
 		case PAUSED:
 			if (pauseScreen.isBackButtonPressed()) {
@@ -151,26 +152,28 @@ public class GameScreen extends Screen {
 			break;
 		}
 		
-
+		// update the player
+		player.update(deltaTime);
+		
 		// Update the world
 		worldManager.update(deltaTime);
 		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
-		for (int i = 0; i < worldManager.getObstacleCount(); i++) {
+		for (int i = 0; i < obstList.size(); i++) {
 			MovingThing obst = obstList.get(i);
 			
-			// TODO: set obstacle speed relative to the player's speed
+			// set obstacle speed relative to the player's speed
 			obst.setySpeed(worldManager.getCurrentSpeed());
 			
 			// Check for collisions
 			if (player.collidesWith(obst)) {
-				// gameState = GameState.GAME_OVER;
+				gameState = GameState.GAME_OVER;
 			}
 			
 			// TODO: check if obstacles are outside screen
 			// if yes then mark the object for deletion
-//			obst.update(deltaTime);
+			obst.update(deltaTime);
 //			if (obst.getyPosition() > HEIGHT - Assets.stepLeft.getHeight()) {
 //				obst.setyPosition(-obst.getImage().getHeight());
 //				obst.setxPosition(worldManager.getLanes()[rand.nextInt(3)]);

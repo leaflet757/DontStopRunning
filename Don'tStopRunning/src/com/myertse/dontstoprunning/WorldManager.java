@@ -6,9 +6,11 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.myertse.dontstoprunning.entities.DodgeEnemy;
+import com.myertse.dontstoprunning.entities.JumpableEnemy;
 import com.myertse.dontstoprunning.entities.MovingThing;
 import com.myertse.dontstoprunning.enums.SpawnerState;
-import com.myertse.framework.impl.Pool;
+import com.myertse.framework.impl.UniqueRandom;
 
 
 public class WorldManager {
@@ -34,11 +36,8 @@ public class WorldManager {
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacleList;
-	int obstacleCount = 0;
-	Pool<MovingThing> obstaclePool;
-	ObstacleFactory obstacleFactory;
 	
-	SpawnerState spawnState;
+	SpawnerState spawnState = SpawnerState.NONE;
 	final int LEVEL_1 = 25; // TODO - We will have to change max speed and level markers
 	final int LEVEL_2 = 75;
 	final int LEVEL_3 = 125;
@@ -64,9 +63,7 @@ public class WorldManager {
 		lanes[2] = xRightLane;
 		
 		// initialize obstacles
-		obstacleList = new ArrayList<MovingThing>(10);
-		obstacleFactory = new ObstacleFactory();
-		obstaclePool = new Pool<MovingThing>(obstacleFactory, 20);
+		obstacleList = new ArrayList<MovingThing>(0);
 		
 		// initialize player information
 		distance = 0;
@@ -76,12 +73,12 @@ public class WorldManager {
 		
 		randD = new Random();
 		distanceCounter = LEVEL_1;
+		previousDisplayDistance = 0;
 
 	}
 	
-	public void addObstacle() {
-		obstacleList.add(obstaclePool.newObject());
-		obstacleCount++;
+	public void addObstacle(MovingThing obj) {
+		obstacleList.add(obj);
 	}
 	
 	public List<MovingThing> getObstacles() {
@@ -165,38 +162,29 @@ public class WorldManager {
 
 	public void update(float deltaTime) {
 		
-		if (displayDistance > LEVEL_1) {
-			spawnState = SpawnerState.SINGLE_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
-			Log.d("LEVEL 1", "Greater than 25");
-		}
-		else if (displayDistance > LEVEL_2) {
-			Log.d("LEVEL 2", "Greater than 75");
-			decAmount += 0.01;
-			spawnState = SpawnerState.MOVING_OBJECT_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
-		}
-		else if (displayDistance > LEVEL_3) {
-			Log.d("LEVEL 3", "Greater than 125");
-			spawnState = SpawnerState.DOUBLE_OBJECT_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
-		}
-		else if (displayDistance > LEVEL_4) {
-			Log.d("LEVEL 4", "Greater than 200");
-			decAmount += 0.01;
-			spawnState = SpawnerState.CHASM_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
+		if (displayDistance > LEVEL_6) {
+			Log.d("LEVEL 6", "Greater than 250");
+			spawnState = SpawnerState.END_GAME_SPAWN;
 		}
 		else if (displayDistance > LEVEL_5) {
 			Log.d("LEVEL 5", "Greater than 215");
 			spawnState = SpawnerState.TRIPLE_OBJECT_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
 		}
-		else if (displayDistance > LEVEL_6) {
-			Log.d("LEVEL 6", "Greater than 250");
-			decAmount += 0.01;
-			spawnState = SpawnerState.END_GAME_SPAWN;
-			obstacleFactory.setCurrentSpawnState(spawnState);
+		else if (displayDistance > LEVEL_4) {
+			Log.d("LEVEL 4", "Greater than 200");
+			spawnState = SpawnerState.CHASM_SPAWN;
+		}
+		else if (displayDistance > LEVEL_3) {
+			Log.d("LEVEL 3", "Greater than 125");
+			spawnState = SpawnerState.DOUBLE_OBJECT_SPAWN;
+		}
+		else if (displayDistance > LEVEL_2) {
+			Log.d("LEVEL 2", "Greater than 75");
+			spawnState = SpawnerState.MOVING_OBJECT_SPAWN;
+		}
+		else if (displayDistance > LEVEL_1) {
+			spawnState = SpawnerState.SINGLE_SPAWN;
+			Log.d("LEVEL 1", "Greater than 25");
 		}
 		// TODO: should game still get harder over time?
 		
@@ -231,9 +219,48 @@ public class WorldManager {
 	private void spawnObstacle() {
 		distanceCounter = randD.nextInt(5) + 8;
 		// TODO: still need to spawn obstacle
+		//int numObstaclesToSpawn = spawnState.getValue();
+		createObstacle();
 	}
 
-	public int getObstacleCount() {
-		return obstacleCount;
+	private void createObstacle() {
+		UniqueRandom random = new UniqueRandom(0, 2);
+		int r = random.nextUniqueRandom();
+		
+		switch(spawnState) { // TODO: createt more obstacles
+		case CHASM_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case DOUBLE_OBJECT_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new DodgeEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case END_GAME_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new DodgeEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case MOVING_OBJECT_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case SINGLE_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case TRIPLE_OBJECT_SPAWN:
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			r = random.nextUniqueRandom();
+			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			break;
+		case NONE:
+			break;
+		}
 	}
+
 }

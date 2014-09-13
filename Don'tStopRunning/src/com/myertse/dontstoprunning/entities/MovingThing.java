@@ -2,6 +2,7 @@ package com.myertse.dontstoprunning.entities;
 
 import android.graphics.Rect;
 
+import com.myertse.dontstoprunning.Assets;
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Pixmap;
 import com.myertse.framework.impl.Actor2D;
@@ -17,13 +18,12 @@ public class MovingThing extends Actor2D {
 	
 	protected int ySpeed;
 	
-	public MovingThing(Pixmap image, int initialX, int initialY, int initialSpeed) {
+	public MovingThing(int initialX, int initialY, int initialSpeed) {
 		super();
-		this.setImage(image);
+		image = null;
 		setxPosition(initialX);
 		setyPosition(initialY);
 		setySpeed(initialSpeed);
-		hitbox = new Rect(initialX, initialY, initialX + image.getWidth(), initialY + image.getHeight());
 	}
 	
 	

@@ -34,6 +34,8 @@ public class Assets {
 	public static Pixmap pause_back_button;
 	public static Pixmap pause_options_button;
 	public static Pixmap pause_retry_button;
+	public static Pixmap game_over;
+	public static Pixmap game_over_retry;
 	
 	
 	

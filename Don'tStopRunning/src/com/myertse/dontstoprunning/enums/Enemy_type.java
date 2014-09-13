@@ -1,5 +1,5 @@
 package com.myertse.dontstoprunning.enums;
 
 public enum Enemy_type {
-	BLOCK, DOUBLEBLOCK, CLIFF, CLIFFTEXT
+	JUMPABLE, NON_JUMPABLE, CHASM, CHASM_TEXT
 }
