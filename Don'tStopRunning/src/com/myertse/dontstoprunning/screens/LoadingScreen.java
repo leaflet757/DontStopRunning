@@ -50,6 +50,7 @@ public class LoadingScreen extends Screen {
 		Assets.pause_retry_button = g.newPixmap("images/pause_menu_retry.png", PixmapFormat.ARGB4444);
 		Assets.game_over = g.newPixmap("images/end_screen.png", PixmapFormat.ARGB4444);
 		Assets.game_over_retry = g.newPixmap("images/end_screen_retry.png", PixmapFormat.ARGB4444);
+		Assets.protaganistJump = g.newPixmap("images/charlie_jump.png", PixmapFormat.ARGB4444);
 		
 		
 		game.setScreen(new MenuScreen(game));

@@ -1,5 +1,8 @@
 package com.myertse.dontstoprunning.entities;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.graphics.Rect;
 
 import com.myertse.dontstoprunning.Assets;
@@ -10,10 +13,15 @@ public class Player extends MovingThing {
 
 	int lanePosition;
 	int imageIndex;
+	int oldImageIndex;
 	
 	int[] lanes;
 	int x;
 	int y;
+	
+	long startingTime = 0;
+	long endingTime = 0;
+	boolean jumpButtonPressed = false;
 	
 	Pixmap[] runningImages;
 
@@ -23,13 +31,14 @@ public class Player extends MovingThing {
 		this.lanes = lanes;
 		x = initialX;
 		y = initialY;
-		runningImages = new Pixmap[3];
+		runningImages = new Pixmap[4];
 		runningImages[0] = Assets.protaganistLeft;
 		runningImages[1] = Assets.protaganistMid;
 		runningImages[2] = Assets.protaganistRight;
+		runningImages[3] = Assets.protaganistJump;
 		hitbox = new Rect(initialX, initialY, initialX + image.getWidth(), initialY + image.getHeight());
 		lanePosition = 1;
-		imageIndex = 0;
+		imageIndex = 1;
 	}
 
 	public void moveLeft() {
@@ -44,6 +53,30 @@ public class Player extends MovingThing {
 			lanePosition++;
 			x = lanes[lanePosition];
 		}
+	}
+	
+	public void jump()
+	{
+		startingTime = System.nanoTime();
+		if(!jumpButtonPressed)
+		{
+			//Add 1000 milliseconds to time
+			endingTime = startingTime + 1000000000;
+			jumpButtonPressed = true;
+			oldImageIndex = imageIndex;
+		}
+		else
+		{
+			if(startingTime >= endingTime)
+			{
+				jumpButtonPressed = false;
+				imageIndex = oldImageIndex;
+				return;
+			}
+		}
+		
+		//Assign to jump picture
+		imageIndex = 3;
 	}
 
 	@Override
@@ -62,5 +95,10 @@ public class Player extends MovingThing {
 		} else {
 			imageIndex = 0;
 		}
+	}
+	
+	public boolean isJumping()
+	{
+		return jumpButtonPressed;
 	}
 }

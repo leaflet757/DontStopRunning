@@ -78,7 +78,15 @@ public class GameScreen extends Screen {
 		// TODO Auto-generated method stub
 		Log.d("GameScreen", "updating...");
 
-		inputWrapper.update(deltaTime);
+		if(player.isJumping())
+		{
+			@SuppressWarnings("unused")
+			int nothing = 0;
+		}
+		else
+		{
+			inputWrapper.update(deltaTime);
+		}
 
 		switch (gameState) {
 		case STARTING:
@@ -116,6 +124,8 @@ public class GameScreen extends Screen {
 		
 		// get the latest player touch movement state
 		PlayerMovementState state = inputWrapper.getPlayerMovementState();
+		if(player.isJumping())
+			state = state.JUMPING;
 		switch (state) {
 		case ALTERNATING:
 			Log.d("Input", "Alternating click");
@@ -134,6 +144,8 @@ public class GameScreen extends Screen {
 			break;
 		case JUMPING:
 			// jump action
+			inputWrapper.setLastButtonPressed(inputWrapper.getLastButtonPressed());
+			player.jump();
 			Log.d("Input", "Double Down");
 			break;
 		case STOPPING:
