@@ -95,5 +95,15 @@ public class InputWrapper {
 		}	
 
 	}
+	
+	public Button getLastButtonPressed()
+	{
+		return lastButtonPressed;
+	}
+	
+	public void setLastButtonPressed(Button overrideButton)
+	{
+		lastButtonPressed = overrideButton;
+	}
 
 }
