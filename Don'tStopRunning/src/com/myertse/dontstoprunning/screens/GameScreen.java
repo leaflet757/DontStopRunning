@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.myertse.HighScoreManager;
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.dontstoprunning.InputWrapper;
 import com.myertse.dontstoprunning.WorldManager;
@@ -25,6 +26,9 @@ public class GameScreen extends Screen {
 	// Contains all information relevant to the player
 	WorldManager worldManager;
 	
+	// HighScoreManager Handles FileIO
+	HighScoreManager highScoreManager;
+	
 	// Controls Game Specific Input
 	InputWrapper inputWrapper;
 	
@@ -40,13 +44,10 @@ public class GameScreen extends Screen {
 	// THIS IS THE PLAYER IF YOU COULD NOT TELL
 	Player player;
 
-	// TODO test enemy
-	Random rand;
-
 
 	public GameScreen(Game game) {
 		super(game);
-
+		
 		init();
 	}
 
@@ -55,17 +56,15 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		
 		worldManager = new WorldManager(g.getWidth(), g.getHeight());
+		
+		highScoreManager = new HighScoreManager(GAME);
 
 		inputWrapper = new InputWrapper(GAME.getInput(), g.getWidth(),
 				g.getHeight());
-
-
-		rand = new Random();
 		
 		player = new Player(worldManager.getLanes(), worldManager.getMiddleLane(),
 				g.getHeight() - Assets.stepLeft.getHeight()
 				- Assets.protaganistMid.getHeight());
-
 		
 		pauseScreen = new PauseScreen(GAME);
 		
@@ -75,7 +74,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
+		
 		Log.d("GameScreen", "updating...");
 
 		if(player.isJumping())
@@ -90,11 +89,13 @@ public class GameScreen extends Screen {
 
 		switch (gameState) {
 		case STARTING:
-			// TODO: reset game
+			worldManager.setHighScoreDistance(highScoreManager.gethighScore());
 			gameState = GameState.RUNNING;
 			break;
 		case GAME_OVER:
-			Graphics g = GAME.getGraphics();
+			if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
+				highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
+			}
 			GAME.setScreen(new EndScreen(GAME));
 			gameState = GameState.STARTING;
 			break;
@@ -106,8 +107,11 @@ public class GameScreen extends Screen {
 				GAME.setScreen(new OptionsScreen(GAME, this));
 			}
 			else if (pauseScreen.isRestartButtonPressed()) {
-				gameState = GameState.STARTING;
-				GAME.setScreen(new GameScreen(GAME));
+				// save if new high score
+				if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
+					highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
+				}
+				GAME.setScreen(new GameScreen(GAME)); // TODO: I don't know how I feel about this...
 			}
 			
 			break;
@@ -222,8 +226,9 @@ public class GameScreen extends Screen {
 		g.drawPixmap(Assets.stepRight, g.getWidth() / 2, g.getHeight()
 				- Assets.stepRight.getHeight());
 		
-		// Draw Distance and Speed
+		// Draw Distance and Speed and High Score
 		g.drawText(200, 200, 20, "" + worldManager.getDistance());
+		g.drawText(250, 200, 20, "" + highScoreManager.gethighScore());
 		g.drawText(200, 230, 30, "" + worldManager.getCurrentSpeed());
 		g.drawText(200, 260, 32, "" + worldManager.getNextSpawnDistance());
 		
@@ -238,7 +243,12 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
+
+		if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
+			highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
+		}
+		
 		Log.d("GameScreen", "pausing...");
 	}
 

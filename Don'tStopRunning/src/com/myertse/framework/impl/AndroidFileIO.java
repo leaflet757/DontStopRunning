@@ -46,4 +46,10 @@ public class AndroidFileIO implements FileIO {
 	public SharedPreferences getPreferences() {
 		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
+
+	@Override
+	public String getExternalStoragePath() {
+		return externalStoragePath;
+	}
+	
 }

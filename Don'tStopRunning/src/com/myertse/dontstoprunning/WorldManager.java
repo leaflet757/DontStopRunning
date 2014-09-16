@@ -23,6 +23,9 @@ public class WorldManager {
 	int xRightLane;
 	private int[] lanes;
 	
+	// high score tracker
+	private int highScoreDistance = 0;
+	
 	// Player Information
 	private int distance;
 	private int stepCount;
@@ -162,6 +165,12 @@ public class WorldManager {
 
 	public void update(float deltaTime) {
 		
+		// update highscore if needed
+		if (highScoreDistance < displayDistance) {
+			highScoreDistance = displayDistance;
+		}
+		
+		// check what level player is on
 		if (displayDistance > LEVEL_6) {
 			Log.d("LEVEL 6", "Greater than 250");
 			spawnState = SpawnerState.END_GAME_SPAWN;
@@ -261,6 +270,14 @@ public class WorldManager {
 		case NONE:
 			break;
 		}
+	}
+
+	public int getHighScoreDistance() {
+		return highScoreDistance;
+	}
+
+	public void setHighScoreDistance(int highScoreDistance) {
+		this.highScoreDistance = highScoreDistance;
 	}
 
 }
