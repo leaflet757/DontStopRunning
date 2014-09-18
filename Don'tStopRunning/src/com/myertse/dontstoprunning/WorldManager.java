@@ -6,6 +6,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.myertse.dontstoprunning.entities.Cliff;
 import com.myertse.dontstoprunning.entities.DodgeEnemy;
 import com.myertse.dontstoprunning.entities.JumpableEnemy;
 import com.myertse.dontstoprunning.entities.MovingThing;
@@ -227,8 +228,6 @@ public class WorldManager {
 	
 	private void spawnObstacle() {
 		distanceCounter = randD.nextInt(5) + 8;
-		// TODO: still need to spawn obstacle
-		//int numObstaclesToSpawn = spawnState.getValue();
 		createObstacle();
 	}
 
@@ -238,9 +237,9 @@ public class WorldManager {
 		int q;
 		int y;
 		
-		switch(spawnState) { // TODO: chasm does nto need random
+		switch(spawnState) {
 		case CHASM_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
+			addObstacle(new Cliff(0,0, currentSpeed));
 			q = random.nextInt(3);
 			y = -Assets.jump_enemy1.getHeight();
 			if (q == r) {
@@ -273,6 +272,7 @@ public class WorldManager {
 			break;
 		case SINGLE_SPAWN:
 			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
+			//addObstacle(new Cliff(0,0, currentSpeed));
 			break;
 		case TRIPLE_OBJECT_SPAWN:
 			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
