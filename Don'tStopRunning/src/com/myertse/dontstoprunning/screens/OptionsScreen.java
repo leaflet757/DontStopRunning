@@ -35,11 +35,14 @@ public class OptionsScreen extends Screen {
 				yTouch >= backButtonY && yTouch <= backButtonY + Assets.options_back_button.getWidth() &&
 				released == true)
 		{
-			GAME.setScreen(previousScreen);
 			while(input.isTouchDown(0))
 			{
 				//wait for release
 			}
+			GAME.setScreen(previousScreen);
+			previousScreen.resume();
+			
+			/**********KNOWN BUG: Options back button does not fire properly on time somtimes ******************/
 		}
 	}
 

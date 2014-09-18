@@ -43,6 +43,9 @@ public class GameScreen extends Screen {
 
 	// THIS IS THE PLAYER IF YOU COULD NOT TELL
 	Player player;
+	
+	//To see if he is alive, I swaer
+	boolean alive = true;
 
 
 	public GameScreen(Game game) {
@@ -98,11 +101,18 @@ public class GameScreen extends Screen {
 			gameState = GameState.RUNNING;
 			break;
 		case GAME_OVER:
+			if(alive)
+			{
+				gameState = GameState.DYING;
+				break;
+			}
+			
 			if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
 				highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
 			}
 			GAME.setScreen(new EndScreen(GAME));
 			gameState = GameState.STARTING;
+			alive = true;
 			break;
 		case PAUSED:
 			if (pauseScreen.isBackButtonPressed()) {
@@ -118,12 +128,20 @@ public class GameScreen extends Screen {
 				}
 				GAME.setScreen(new GameScreen(GAME)); // TODO: I don't know how I feel about this...
 			}
-			
 			break;
 		case RUNNING:
 			runGame(deltaTime);
 			break;
+			
+		case DYING:
+			alive = false;
+			if(player.die())
+			{
+				gameState = GameState.GAME_OVER;
+			}
+			break;
 		}
+		
 
 	}
 
@@ -135,6 +153,7 @@ public class GameScreen extends Screen {
 		PlayerMovementState state = inputWrapper.getPlayerMovementState();
 		if(player.isJumping())
 			state = state.JUMPING;
+		if(alive)
 		switch (state) {
 		case ALTERNATING:
 			Log.d("Input", "Alternating click");
