@@ -253,13 +253,22 @@ public class GameScreen extends Screen {
 		if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
 			highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
 		}
+		if(Assets.backgroundMusic.isPlaying())
+		{
+			Assets.backgroundMusic.pause();
+		}
 		
 		Log.d("GameScreen", "pausing...");
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+		
+		if(!Assets.backgroundMusic.isPlaying())
+		{
+			Assets.backgroundMusic.play();
+		}
+		
 		Log.d("GameScreen", "resuming...");
 	}
 
