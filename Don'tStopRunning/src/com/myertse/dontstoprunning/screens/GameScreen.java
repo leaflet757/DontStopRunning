@@ -13,6 +13,7 @@ import com.myertse.dontstoprunning.entities.DodgeEnemy;
 import com.myertse.dontstoprunning.entities.JumpableEnemy;
 import com.myertse.dontstoprunning.entities.MovingThing;
 import com.myertse.dontstoprunning.entities.Player;
+import com.myertse.dontstoprunning.enums.Enemy_type;
 import com.myertse.dontstoprunning.enums.GameState;
 import com.myertse.dontstoprunning.enums.PlayerMovementState;
 import com.myertse.framework.Game;
@@ -190,6 +191,11 @@ public class GameScreen extends Screen {
 			// Check for collisions
 			if (player.collidesWith(obst)) {
 				gameState = GameState.GAME_OVER;
+				if (player.isJumping() &&
+					(obst.getType() == Enemy_type.CHASM ||
+					obst.getType() == Enemy_type.JUMPABLE)) {
+					gameState = GameState.RUNNING;
+				}
 			}
 			
 			// TODO: check if obstacles are outside screen
