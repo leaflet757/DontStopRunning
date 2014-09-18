@@ -23,7 +23,7 @@ public class Player extends MovingThing {
 	long endingTime = 0;
 	boolean jumpButtonPressed = false;
 	
-	final int OFFSET = 20;
+	final int OFFSET = 50;
 	
 	Pixmap[] runningImages;
 
