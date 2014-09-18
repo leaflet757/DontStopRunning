@@ -1,5 +1,6 @@
 package com.myertse.dontstoprunning.screens;
 
+import com.myertse.HighScoreManager;
 import com.myertse.dontstoprunning.Assets;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
@@ -31,8 +32,10 @@ public class HighScoreScreen extends Screen {
 
 	@Override
 	public void present(float deltaTime) {
+		HighScoreManager highScore = new HighScoreManager(GAME);
 		Graphics g = GAME.getGraphics();
 		g.drawPixmap(Assets.high_score_screen, 150, 300);
+		g.drawText(215, 450, 20, "" + highScore.gethighScore());
 	}
 
 	@Override
