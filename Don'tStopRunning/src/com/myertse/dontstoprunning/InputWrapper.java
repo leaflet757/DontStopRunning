@@ -41,7 +41,7 @@ public class InputWrapper {
 		currentState = PlayerMovementState.STOPPING;
 		
 		// Check for Jumping
-		if (released && input.isTouchDown(0) && input.isTouchDown(1)) {
+		if (input.isTouchDown(0) && input.isTouchDown(1)) {
 			int x = input.getTouchX(0);
 			int y = input.getTouchY(0);
 			int x2 = input.getTouchX(1);

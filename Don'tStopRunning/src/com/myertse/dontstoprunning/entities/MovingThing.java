@@ -3,6 +3,7 @@ package com.myertse.dontstoprunning.entities;
 import android.graphics.Rect;
 
 import com.myertse.dontstoprunning.Assets;
+import com.myertse.dontstoprunning.enums.Enemy_type;
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Pixmap;
 import com.myertse.framework.impl.Actor2D;
@@ -18,12 +19,15 @@ public class MovingThing extends Actor2D {
 	
 	protected int ySpeed;
 	
+	protected Enemy_type type;
+	
 	public MovingThing(int initialX, int initialY, int initialSpeed) {
 		super();
 		image = null;
 		setxPosition(initialX);
 		setyPosition(initialY);
 		setySpeed(initialSpeed);
+		type = null;
 	}
 	
 	
@@ -104,6 +108,16 @@ public class MovingThing extends Actor2D {
 			return true;
 		}
 		return false;
+	}
+
+
+	public Enemy_type getType() {
+		return type;
+	}
+
+
+	public void setType(Enemy_type type) {
+		this.type = type;
 	}
 	
 }

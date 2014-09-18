@@ -5,6 +5,7 @@ import java.util.Random;
 import android.graphics.Rect;
 
 import com.myertse.dontstoprunning.Assets;
+import com.myertse.dontstoprunning.enums.Enemy_type;
 import com.myertse.framework.Pixmap;
 
 public class DodgeEnemy extends Enemy{
@@ -20,6 +21,7 @@ public class DodgeEnemy extends Enemy{
 		Pixmap newImage = pictureList[random.nextInt(pictureList.length - 1)];
 		setImage(newImage);
 		hitbox = new Rect(initialX, initialY, initialX + image.getWidth(), initialY + image.getHeight());
+		type = Enemy_type.NON_JUMPABLE;
 	}
 
 	public int getLane() {
