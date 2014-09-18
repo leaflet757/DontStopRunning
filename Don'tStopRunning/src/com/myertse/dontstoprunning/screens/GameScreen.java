@@ -70,11 +70,16 @@ public class GameScreen extends Screen {
 		
 		
 		gameState = GameState.STARTING;
+		Assets.backgroundMusic.play();
+		Assets.backgroundMusic.setLooping(true);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		
+		if(Assets.backgroundMusic.isStopped())
+		{
+			Assets.backgroundMusic.play();
+		}
 		Log.d("GameScreen", "updating...");
 
 		if(player.isJumping())

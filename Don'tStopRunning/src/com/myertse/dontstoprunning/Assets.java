@@ -37,7 +37,8 @@ public class Assets {
 	public static Pixmap pause_retry_button;
 	public static Pixmap game_over;
 	public static Pixmap game_over_retry;
-	
+	public static Pixmap high_score_screen;
+	public static Pixmap help_screen;
 	
 	
 	public static Sound tap;

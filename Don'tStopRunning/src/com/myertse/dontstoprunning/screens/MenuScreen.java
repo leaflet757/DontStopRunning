@@ -8,11 +8,30 @@ import com.myertse.framework.Screen;
 
 public class MenuScreen extends Screen {
 
-	int startButtonX = 30;
-	int startButtonY = 420;
+	//34,592	start top
+	//196,662   start bot
 	
-	int optionsButtonX = 208;
-	int optionsButtonY = 630;
+	//256,591  options top
+	//414,661  options bot
+	
+	//34,695   high scores top
+	//196,757  hight scores bot
+	
+	//255,696  help top  
+	//416,757  help bot
+	
+	int startButtonX = 34; int startButtonY = 592;
+	int startButtonX2 = 196; int startButtonY2 = 662;
+	
+	int optionsButtonX = 256; int optionsButtonY = 591;
+	int optionsButtonX2 = 414; int optionsButtonY2 = 661;
+	
+	int highScoresButtonX = 34; int highScoresButtonY = 695;
+	int highScoresButtonX2 = 196; int highScoresButtonY2 = 757;
+	
+	int helpButtonX = 255; int helpButtonY = 696;
+	int helpButtonX2 = 416; int helpButtonY2 = 757;
+	
 	
 	boolean released = false;
 	
@@ -34,21 +53,41 @@ public class MenuScreen extends Screen {
 		
 		//If in start button range
 		if(input.isTouchDown(0) && 
-				xTouch >= startButtonX && xTouch <= startButtonX + Assets.title_play_button.getWidth() &&
-				yTouch >= startButtonY && yTouch <= startButtonY + Assets.title_play_button.getHeight() &&
+				xTouch >= startButtonX && xTouch <= startButtonX2 &&
+				yTouch >= startButtonY && yTouch <= startButtonY2 &&
 				released == true)
 		{
 			GAME.setScreen(new GameScreen(GAME));
 		}
 		
 		//if in options button range
-		if(input.isTouchDown(0) &&
-				xTouch >= optionsButtonX && xTouch <= optionsButtonX + Assets.title_options_button.getWidth() &&
-				yTouch >= optionsButtonY && yTouch <= optionsButtonY + Assets.title_options_button.getHeight() &&
+		else if(input.isTouchDown(0) &&
+				xTouch >= optionsButtonX && xTouch <= optionsButtonX2 &&
+				yTouch >= optionsButtonY && yTouch <= optionsButtonY2 &&
 				released == true)
 		{
 			GAME.setScreen(new OptionsScreen(GAME, this));
 		}
+		
+		//If in high scores button range
+		else if(input.isTouchDown(0) &&
+				xTouch >= highScoresButtonX && xTouch <= highScoresButtonX2 &&
+				yTouch >= highScoresButtonY && yTouch <= highScoresButtonY2 &&
+				released == true)
+		{
+			GAME.setScreen(new HighScoreScreen(GAME, this));
+		}
+		
+		//If in help button range
+		else if(input.isTouchDown(0) &&
+				xTouch >= helpButtonX && xTouch <= helpButtonX2 &&
+				yTouch >= helpButtonY && yTouch <= helpButtonY2 &&
+				released == true)
+		{
+			GAME.setScreen(new HelpScreen(GAME, this));
+		}
+		
+		
 	}
 
 	@Override
@@ -57,8 +96,8 @@ public class MenuScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(0);
 		g.drawPixmap(Assets.title_page, 0, 0);
-		g.drawPixmap(Assets.title_play_button, startButtonX, startButtonY);
-		g.drawPixmap(Assets.title_options_button, optionsButtonX, optionsButtonY);
+		//g.drawPixmap(Assets.title_play_button, startButtonX, startButtonY);
+		//g.drawPixmap(Assets.title_options_button, optionsButtonX, optionsButtonY);
 	}
 
 	@Override

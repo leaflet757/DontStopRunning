@@ -238,34 +238,34 @@ public class WorldManager {
 		
 		switch(spawnState) { // TODO: createt more obstacles
 		case CHASM_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			break;
 		case DOUBLE_OBJECT_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new DodgeEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new DodgeEnemy(lanes[r], -Assets.dodge_enemy2.getHeight(), currentSpeed));
 			break;
 		case END_GAME_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new DodgeEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new DodgeEnemy(lanes[r], -Assets.dodge_enemy2.getHeight(), currentSpeed));
 			break;
 		case MOVING_OBJECT_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.dodge_enemy2.getHeight(), currentSpeed));
 			break;
 		case SINGLE_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			break;
 		case TRIPLE_OBJECT_SPAWN:
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			r = random.nextUniqueRandom();
-			addObstacle(new JumpableEnemy(lanes[r], -0, currentSpeed));
+			addObstacle(new JumpableEnemy(lanes[r], -Assets.jump_enemy1.getHeight(), currentSpeed));
 			break;
 		case NONE:
 			break;

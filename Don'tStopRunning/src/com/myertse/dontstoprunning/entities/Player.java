@@ -23,6 +23,8 @@ public class Player extends MovingThing {
 	long endingTime = 0;
 	boolean jumpButtonPressed = false;
 	
+	final int OFFSET = 20;
+	
 	Pixmap[] runningImages;
 
 	public Player(int[] lanes, int initialX, int initialY) {
@@ -36,7 +38,8 @@ public class Player extends MovingThing {
 		runningImages[1] = Assets.protaganistMid;
 		runningImages[2] = Assets.protaganistRight;
 		runningImages[3] = Assets.protaganistJump;
-		hitbox = new Rect(initialX, initialY, initialX + image.getWidth(), initialY + image.getHeight());
+		hitbox = new Rect(initialX + OFFSET, initialY + OFFSET, 
+				initialX + image.getWidth() - OFFSET, initialY + image.getHeight() - OFFSET);
 		lanePosition = 1;
 		imageIndex = 1;
 	}
@@ -86,7 +89,7 @@ public class Player extends MovingThing {
 	
 	@Override
 	public void update(float deltaTime) {
-		hitbox.offsetTo(x, y);
+		hitbox.offsetTo(x + OFFSET, y + OFFSET);
 	}
 
 	public void changeRunningImage() {
