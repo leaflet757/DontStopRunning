@@ -23,6 +23,8 @@ public class Player extends MovingThing {
 	long endingTime = 0;
 	boolean jumpButtonPressed = false;
 	
+	public boolean dead = false;
+	
 	final int OFFSET = 50;
 	
 	Pixmap[] runningImages;
@@ -33,11 +35,12 @@ public class Player extends MovingThing {
 		this.lanes = lanes;
 		x = initialX;
 		y = initialY;
-		runningImages = new Pixmap[4];
+		runningImages = new Pixmap[5];
 		runningImages[0] = Assets.protaganistLeft;
 		runningImages[1] = Assets.protaganistMid;
 		runningImages[2] = Assets.protaganistRight;
 		runningImages[3] = Assets.protaganistJump;
+		runningImages[4] = Assets.protaganistDeath;
 		hitbox = new Rect(initialX + OFFSET, initialY + OFFSET, 
 				initialX + image.getWidth() - OFFSET, initialY + image.getHeight() - OFFSET);
 		lanePosition = 1;
@@ -81,10 +84,36 @@ public class Player extends MovingThing {
 		//Assign to jump picture
 		imageIndex = 3;
 	}
+	
+	public boolean die()
+	{
+		startingTime = System.nanoTime();
+		if(!dead)
+		{
+			endingTime = startingTime + 800000000;
+			dead = true;
+		}
+		else
+		{
+			if(startingTime >= endingTime)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawPixmap(runningImages[imageIndex], x, y);
+		if(!dead)
+		{
+			g.drawPixmap(runningImages[imageIndex], x, y);
+		}
+		else
+		{
+			g.drawPixmap(runningImages[4], x, y);
+			
+		}
 	}
 	
 	@Override

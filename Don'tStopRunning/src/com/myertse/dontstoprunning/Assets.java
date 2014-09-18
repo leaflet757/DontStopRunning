@@ -15,6 +15,7 @@ public class Assets {
 	public static Pixmap protaganistLeft;
 	public static Pixmap protaganistRight;
 	public static Pixmap protaganistJump;
+	public static Pixmap protaganistDeath;
 	public static Pixmap stepLeft;
 	public static Pixmap stepRight;
 	public static Pixmap jump_enemy1;
