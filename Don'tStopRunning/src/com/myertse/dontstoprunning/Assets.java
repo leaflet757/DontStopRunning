@@ -40,6 +40,8 @@ public class Assets {
 	public static Pixmap game_over_retry;
 	public static Pixmap high_score_screen;
 	public static Pixmap help_screen;
+	public static Pixmap speed_bar;
+	public static Pixmap speed_bar_arrow;
 	
 	
 	public static Sound tap;

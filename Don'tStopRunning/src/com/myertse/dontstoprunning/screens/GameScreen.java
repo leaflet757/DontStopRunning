@@ -86,10 +86,15 @@ public class GameScreen extends Screen {
 		}
 		Log.d("GameScreen", "updating...");
 
+		if(worldManager.getCurrentSpeed() < 2
+				&& worldManager.getDistance() > 10 && alive)
+		{
+			gameState = GameState.DYING;
+		}
+		
+		
 		if(player.isJumping())
 		{
-			@SuppressWarnings("unused")
-			int nothing = 0;
 		}
 		else
 		{
@@ -127,7 +132,7 @@ public class GameScreen extends Screen {
 				if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
 					highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
 				}
-				GAME.setScreen(new GameScreen(GAME)); // TODO: I don't know how I feel about this...
+				GAME.setScreen(new GameScreen(GAME)); // TODO: I don't know how I feel about this... MAN UP
 			}
 			break;
 		case RUNNING:
@@ -256,11 +261,20 @@ public class GameScreen extends Screen {
 		g.drawPixmap(Assets.stepRight, g.getWidth() / 2, g.getHeight()
 				- Assets.stepRight.getHeight());
 		
+		//Draw Speed Bar
+		g.drawPixmap( Assets.speed_bar, g.getWidth() - Assets.speed_bar.getWidth(), g.getHeight()/4);
+		int locationOfSpeed = worldManager.getCurrentSpeed();
+		locationOfSpeed = (g.getHeight()/4) + Assets.speed_bar.getHeight() - Assets.speed_bar_arrow.getHeight()
+				- (worldManager.getCurrentSpeed() * 20);
+		g.drawPixmap(Assets.speed_bar_arrow, g.getWidth()- Assets.speed_bar_arrow.getWidth() - 2, locationOfSpeed);
+		
+		
 		// Draw Distance and Speed and High Score
-		g.drawText(200, 200, 20, "" + worldManager.getDistance());
-		g.drawText(250, 200, 20, "" + highScoreManager.gethighScore());
-		g.drawText(200, 230, 30, "" + worldManager.getCurrentSpeed());
-		g.drawText(200, 260, 32, "" + worldManager.getNextSpawnDistance());
+		//g.drawText(200, 200, 20, "" + worldManager.getDistance());
+		//g.drawText(250, 200, 20, "" + highScoreManager.gethighScore());
+		g.drawText(g.getWidth() - Assets.step_counter.getWidth() + 3,
+				Assets.step_counter.getHeight()/2, 20, "" + worldManager.getDistance());
+		//g.drawText(200, 260, 32, "" + worldManager.getNextSpawnDistance());
 		
 		// Draw pause screen if paused
 		if (gameState == GameState.PAUSED) {

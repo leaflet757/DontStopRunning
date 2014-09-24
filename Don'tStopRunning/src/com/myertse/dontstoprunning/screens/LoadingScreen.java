@@ -55,6 +55,8 @@ public class LoadingScreen extends Screen {
 		Assets.high_score_screen = g.newPixmap("images/high_score.png", PixmapFormat.ARGB4444);
 		Assets.help_screen = g.newPixmap("images/help_screen.png", PixmapFormat.ARGB4444);
 		Assets.protaganistDeath = g.newPixmap("images/charlie_dead.png", PixmapFormat.ARGB4444);
+		Assets.speed_bar = g.newPixmap("images/speed_bar.png", PixmapFormat.ARGB4444);
+		Assets.speed_bar_arrow = g.newPixmap("images/current_speed_icon.png", PixmapFormat.ARGB4444);
 		
 		game.setScreen(new MenuScreen(game));
 		Log.d("LoadingScreen", "updating...");
