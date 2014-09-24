@@ -50,9 +50,14 @@ public class GameScreen extends Screen {
 	// THIS IS THE PLAYER IF YOU COULD NOT TELL
 	Player player;
 	
-	//To see if he is alive, I swaer
+	//To see if he is alive, I swear
 	boolean alive = true;
 
+	//To see if we should have sound effects
+	boolean sound;
+	
+	//To see if we should have background music
+	boolean music;
 
 	public GameScreen(Game game) {
 		super(game);
@@ -81,13 +86,21 @@ public class GameScreen extends Screen {
 		bgy2 = bgy1 - background2.getHeight();
 		
 		gameState = GameState.STARTING;
-		Assets.backgroundMusic.play();
-		Assets.backgroundMusic.setLooping(true);
+		music  = WorldManager.music;
+		if(music)
+		{
+			Assets.backgroundMusic.play();
+			Assets.backgroundMusic.setLooping(true);
+		}
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if(Assets.backgroundMusic.isStopped())
+		if(!WorldManager.music && Assets.backgroundMusic.isPlaying())
+		{
+			Assets.backgroundMusic.stop();
+		}
+		else if(!WorldManager.music && Assets.backgroundMusic.isStopped())
 		{
 			Assets.backgroundMusic.play();
 		}
@@ -175,12 +188,16 @@ public class GameScreen extends Screen {
 			break;
 		case DOUBLETAP_LEFT:
 			player.moveLeft();
-			Assets.tap.play(1);
+			sound = WorldManager.sound;
+			if(sound)
+				Assets.tap.play(1);
 			Log.d("Input", "DoubleTap Left");
 			break;
 		case DOUBLETAP_RIGHT:
 			player.moveRight();
-			Assets.explosion.play(1);
+			sound = WorldManager.sound;
+			if(sound)
+				Assets.explosion.play(1);
 			Log.d("Input", "Double Tap Right");
 			break;
 		case JUMPING:

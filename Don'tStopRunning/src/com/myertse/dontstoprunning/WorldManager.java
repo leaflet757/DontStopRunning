@@ -37,6 +37,8 @@ public class WorldManager {
 	float elapsedTime = 0;
 	int displayDistance = 0;
 	int previousDisplayDistance = 0;
+	static public boolean sound = true;
+	static public boolean music = true;
 	
 	// Obstacle Information
 	ArrayList<MovingThing> obstacleList;
