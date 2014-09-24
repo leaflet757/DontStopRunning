@@ -40,7 +40,12 @@ public class GameScreen extends Screen {
 	PauseScreen pauseScreen;
 	
 	// Background Image
-	Pixmap background = Assets.background;
+	Pixmap background1 = Assets.background;
+	Pixmap background2 = Assets.background;
+	int bgx1 = 0;
+	int bgy1 = 0;
+	int bgx2 = 0;
+	int bgy2 = 0;
 
 	// THIS IS THE PLAYER IF YOU COULD NOT TELL
 	Player player;
@@ -72,6 +77,8 @@ public class GameScreen extends Screen {
 		
 		pauseScreen = new PauseScreen(GAME);
 		
+		bgy1 = 0;
+		bgy2 = bgy1 - background2.getHeight();
 		
 		gameState = GameState.STARTING;
 		Assets.backgroundMusic.play();
@@ -204,6 +211,10 @@ public class GameScreen extends Screen {
 		// Update the world
 		worldManager.update(deltaTime);
 		
+		// Update the background
+		bgy1 += worldManager.getCurrentSpeed();
+		bgy2 += worldManager.getCurrentSpeed();
+		
 		// Update all obstacles
 		List<MovingThing> obstList = worldManager.getObstacles();
 		for (int i = 0; i < obstList.size(); i++) {
@@ -238,9 +249,18 @@ public class GameScreen extends Screen {
 		Graphics g = GAME.getGraphics();
 		g.clear(1);
 
+		// update background
+		if (bgy1 >= g.getHeight()) {
+			bgy1 = bgy2 - background1.getHeight();
+		}
+		if (bgy2 >= g.getHeight()) {
+			bgy2 = bgy1 - background2.getHeight();
+		}
 		
 		// Display Background Image
-		g.drawPixmap(background, 0, 0);
+		g.drawPixmap(background1, bgx1, bgy1);
+		g.drawPixmap(background2, bgx2, bgy2);
+		
 		g.drawPixmap(Assets.pause_button, 0, 0);
 		g.drawPixmap(Assets.step_counter, g.getWidth() - Assets.step_counter.getWidth(), 0);
 
