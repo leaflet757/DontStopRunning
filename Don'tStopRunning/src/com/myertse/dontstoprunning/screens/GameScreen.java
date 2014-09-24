@@ -129,7 +129,7 @@ public class GameScreen extends Screen {
 			if (worldManager.getHighScoreDistance() > highScoreManager.gethighScore()) {
 				highScoreManager.saveHighScore(worldManager.getHighScoreDistance());
 			}
-			GAME.setScreen(new EndScreen(GAME));
+			GAME.setScreen(new EndScreen(GAME, highScoreManager, worldManager));
 			gameState = GameState.STARTING;
 			alive = true;
 			break;

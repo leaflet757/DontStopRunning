@@ -1,6 +1,8 @@
 package com.myertse.dontstoprunning.screens;
 
+import com.myertse.HighScoreManager;
 import com.myertse.dontstoprunning.Assets;
+import com.myertse.dontstoprunning.WorldManager;
 import com.myertse.framework.Game;
 import com.myertse.framework.Graphics;
 import com.myertse.framework.Input;
@@ -10,13 +12,16 @@ public class EndScreen extends Screen{
 
 	int retryButtonX = 62;
 	int retryButtonY = 342;
+	HighScoreManager highScoreManager;
+	WorldManager worldManager;
 	
 	//62, 342
 	boolean released = false;
 	
-	public EndScreen(Game game) {
+	public EndScreen(Game game, HighScoreManager highScoreManager, WorldManager worldManager) {
 		super(game);
-		// TODO Auto-generated constructor stub
+		this.worldManager = worldManager;
+		this.highScoreManager = highScoreManager;
 	}
 
 	@Override
@@ -46,6 +51,8 @@ public class EndScreen extends Screen{
 		Graphics g = GAME.getGraphics();
 		g.clear(0);
 		g.drawPixmap(Assets.game_over, 0, 0);
+		g.drawText(150, 600, 25, "You ran " + worldManager.getDistance() + " Meters!");
+		g.drawText(120, 650, 35, "Your best is " + highScoreManager.gethighScore());
 	}
 
 	@Override
