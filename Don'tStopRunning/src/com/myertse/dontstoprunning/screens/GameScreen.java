@@ -96,14 +96,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		if(!WorldManager.music && Assets.backgroundMusic.isPlaying())
-		{
-			Assets.backgroundMusic.stop();
-		}
-		else if(!WorldManager.music && Assets.backgroundMusic.isStopped())
-		{
-			Assets.backgroundMusic.play();
-		}
+
 		Log.d("GameScreen", "updating...");
 
 		if(worldManager.getCurrentSpeed() < 2
@@ -340,7 +333,7 @@ public class GameScreen extends Screen {
 	@Override
 	public void resume() {
 		
-		if(!Assets.backgroundMusic.isPlaying())
+		if(!Assets.backgroundMusic.isPlaying() && worldManager.music)
 		{
 			Assets.backgroundMusic.play();
 		}

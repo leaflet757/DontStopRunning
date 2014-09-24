@@ -88,6 +88,7 @@ public class OptionsScreen extends Screen {
 			if(WorldManager.music)
 			{
 				WorldManager.music = false;
+				Assets.backgroundMusic.stop();
 			}
 			else
 			{
